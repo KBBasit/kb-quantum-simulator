@@ -39,9 +39,8 @@ def pauli_z():
 
 def hadamard():
     '''
-    Return the 2x2 Hadamard gate (45° roation in the X-Z
-    plane, creating superposition from computational basis
-    states)
+    Return the 2x2 Hadamard gate, maps computational basis
+    states to equal superpositions
     '''
     return 1 / np.sqrt(2) * np.array([
         [1,1],
@@ -50,7 +49,7 @@ def hadamard():
 
 def s_gate():
     '''
-    Return the 2x2 S gate (90° rotation about the Z axis)
+    Return the 2x2 S phase gate
     '''
     return np.array([
         [1,0],
@@ -59,7 +58,7 @@ def s_gate():
 
 def t_gate():
     '''
-    Return the 2x2 T gate (45° rotation about the Z axis)
+    Return the 2x2 T phase gate
     '''
     return np.array([
         [1,0],

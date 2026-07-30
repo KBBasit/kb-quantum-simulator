@@ -14,57 +14,35 @@ def test_validate_identity():
     assert np.allclose(identity @ z, z)
 
 
-def test_pauli_x_squared_is_identity():
+def is_matrix_squared_identity(matrix):
+    identity = gates.identity()
+    return np.allclose(matrix @ matrix, identity)
+
+
+def is_unitary(matrix):
+    identity = gates.identity()
+    return np.allclose(matrix @ matrix.conj().T, identity)
+
+
+def test_pauli_x_properties():
     x = gates.pauli_x()
-    identity = gates.identity()
+    assert is_matrix_squared_identity(x)
+    assert is_unitary(x)
 
-    assert np.allclose(x @ x, identity)
 
-
-def test_pauli_y_squared_is_identity():
+def test_pauli_y_properties():
     y = gates.pauli_y()
-    identity = gates.identity()
+    assert is_matrix_squared_identity(y)
+    assert is_unitary(y)
 
-    assert np.allclose(y @ y, identity)
 
-
-def test_pauli_z_squared_is_identity():
+def test_pauli_z_properties():
     z = gates.pauli_z()
-    identity = gates.identity()
+    assert is_matrix_squared_identity(z)
+    assert is_unitary(z)
 
-    assert np.allclose(z @ z, identity)
 
-
-def test_hadamard_squared_is_identity():
+def test_hadamard_properties():
     h = gates.hadamard()
-    identity = gates.identity()
-
-    assert np.allclose(h @ h, identity)
-
-
-def test_pauli_x_is_unitary():
-    x = gates.pauli_x()
-    identity = gates.identity()
-
-    assert np.allclose(x @ np.transpose(x), identity)
-
-
-def test_pauli_y_is_unitary():
-    y = gates.pauli_y()
-    identity = gates.identity()
-
-    assert np.allclose(y @ np.transpose(y), identity)
-
-
-def test_pauli_z_is_unitary():
-    z = gates.pauli_z()
-    identity = gates.identity()
-
-    assert np.allclose(z @ np.transpose(z), identity)
-
-
-def test_hadamard_is_unitary():
-    h = gates.hadamard()
-    identity = gates.identity()
-
-    assert np.allclose(h @ np.transpose(h), identity)
+    assert is_matrix_squared_identity(h)
+    assert is_unitary(h)

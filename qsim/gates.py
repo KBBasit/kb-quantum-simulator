@@ -64,3 +64,12 @@ def t_gate():
     return np.array([
         [1,0],
         [0,np.exp(1j * np.pi/4)]], dtype=np.complex128)
+
+
+def identity():
+    '''
+    Return the 2x2 identity matrix
+    '''
+    return np.array([
+        [1,0],
+        [0,1]], dtype=np.complex128)

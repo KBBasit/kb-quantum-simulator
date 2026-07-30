@@ -40,3 +40,31 @@ def test_hadamard_squared_is_identity():
     identity = gates.identity()
 
     assert np.allclose(h @ h, identity)
+
+
+def test_pauli_x_is_unitary():
+    x = gates.pauli_x()
+    identity = gates.identity()
+
+    assert np.allclose(x @ np.transpose(x), identity)
+
+
+def test_pauli_y_is_unitary():
+    y = gates.pauli_y()
+    identity = gates.identity()
+
+    assert np.allclose(y @ np.transpose(y), identity)
+
+
+def test_pauli_z_is_unitary():
+    z = gates.pauli_z()
+    identity = gates.identity()
+
+    assert np.allclose(z @ np.transpose(z), identity)
+
+
+def test_hadamard_is_unitary():
+    h = gates.hadamard()
+    identity = gates.identity()
+
+    assert np.allclose(h @ np.transpose(h), identity)

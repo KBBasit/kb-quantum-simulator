@@ -21,7 +21,7 @@ def is_matrix_squared_identity(matrix):
 
 def is_unitary(matrix):
     identity = np.eye(matrix.shape[0], dtype=np.complex128)
-    return np.allclose(matrix @ matrix.conj().T, identity)
+    return np.allclose(matrix.conj().T @ matrix, identity)
 
 
 def test_pauli_x_properties():

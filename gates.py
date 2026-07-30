@@ -17,19 +17,33 @@ def pauli_x():
     return
 
 def pauli_y():
-    
+    '''
+    Return the 2x2 Pauli Y gate
+    '''
     return
 
 def pauli_z():
+    '''
+    Return the 2x2 Pauli Z gate
+    '''
     return
 
 def hadamard():
+    '''
+    Return the 2x2 Hadamard gate
+    '''
     return
 
 def s_gate():
+    '''
+    Return the 2x2 S gate (90° rotation about the Z axis)
+    '''
     return
 
 def t_gate():
+    '''
+    Return the 2x2 T gate (45° rotation about the Z axis)
+    '''
     return
 
 

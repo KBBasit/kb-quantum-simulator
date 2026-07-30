@@ -20,7 +20,7 @@ def is_matrix_squared_identity(matrix):
 
 
 def is_unitary(matrix):
-    identity = gates.identity()
+    identity = np.eye(matrix.shape[0], dtype=np.complex128)
     return np.allclose(matrix @ matrix.conj().T, identity)
 
 

@@ -14,38 +14,53 @@ def pauli_x():
     ''' 
     Return the 2x2 Pauli X gate
     '''
-    return
+    return np.array([
+        [0,1],
+        [1,0]], dtype=np.complex128)
+
 
 def pauli_y():
     '''
     Return the 2x2 Pauli Y gate
     '''
-    return
+    return np.array([
+        [0,-1j],
+        [1j,0]], dtype=np.complex128)
+
 
 def pauli_z():
     '''
     Return the 2x2 Pauli Z gate
     '''
-    return
+    return np.array([
+        [1,0],
+        [0,-1]], dtype=np.complex128)
+
 
 def hadamard():
     '''
-    Return the 2x2 Hadamard gate
+    Return the 2x2 Hadamard gate (45° roation in the X-Z
+    plane, creating superposition from computational basis
+    states)
     '''
-    return
+    return np.array([
+        [1,1],
+        [1,-1]] * 1/np.sqrt(2), dtype=np.complex128)
+
 
 def s_gate():
     '''
     Return the 2x2 S gate (90° rotation about the Z axis)
     '''
-    return
+    return np.array([
+        [1,0],
+        [0,1j]], dtype=np.complex128)
+
 
 def t_gate():
     '''
     Return the 2x2 T gate (45° rotation about the Z axis)
     '''
-    return
-
-
-
-
+    return np.array([
+        [1,0],
+        [0,np.exp(1j * np.pi/4)]], dtype=np.complex128)

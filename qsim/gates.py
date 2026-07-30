@@ -43,9 +43,9 @@ def hadamard():
     plane, creating superposition from computational basis
     states)
     '''
-    return np.array([
+    return 1/np.sqrt(2) * np.array([
         [1,1],
-        [1,-1]] * 1/np.sqrt(2), dtype=np.complex128)
+        [1,-1]], dtype=np.complex128)
 
 
 def s_gate():

@@ -43,7 +43,7 @@ def hadamard():
     plane, creating superposition from computational basis
     states)
     '''
-    return 1/np.sqrt(2) * np.array([
+    return 1 / np.sqrt(2) * np.array([
         [1,1],
         [1,-1]], dtype=np.complex128)
 
@@ -63,7 +63,7 @@ def t_gate():
     '''
     return np.array([
         [1,0],
-        [0,np.exp(1j * np.pi/4)]], dtype=np.complex128)
+        [0,np.exp(1j * np.pi / 4)]], dtype=np.complex128)
 
 
 def identity():

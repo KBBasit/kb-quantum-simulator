@@ -30,7 +30,8 @@ class StateVector:
     @property
     def num_qubits(self):
         '''
-        Return the number of qubits represented by this state vector.
+        Return the number of qubits represented by this 
+        state vector.
         '''
         return int(np.log2(self.amplitudes.size))
 
@@ -38,6 +39,21 @@ class StateVector:
     @property
     def number_of_dimensions(self):
         '''
-        Return the number of dimensions of the state vector.
+        Return the number of dimensions of the state
+        vector.
         '''
         return self.amplitudes.size
+
+
+    @classmethod
+    def zero_state(cls, num_qubits):
+        '''
+        Create a state vector representing the |0> state 
+        for the given number of qubits.
+        '''
+        if num_qubits < 1:
+            raise ValueError("Number of qubits must be at least 1.")
+
+        amplitudes = np.zeros(2 ** num_qubits, dtype=np.complex128)
+        amplitudes[0] = 1.0
+        return cls(amplitudes)

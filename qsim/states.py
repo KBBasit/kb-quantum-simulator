@@ -23,3 +23,21 @@ class StateVector:
 
         if not np.isclose(np.linalg.norm(amplitudes), 1.0):
             raise ValueError("State vector must be normalized.")
+
+        self.amplitudes = amplitudes
+
+
+    @property
+    def num_qubits(self):
+        '''
+        Return the number of qubits represented by this state vector.
+        '''
+        return int(np.log2(self.amplitudes.size))
+
+
+    @property
+    def number_of_dimensions(self):
+        '''
+        Return the number of dimensions of the state vector.
+        '''
+        return self.amplitudes.size

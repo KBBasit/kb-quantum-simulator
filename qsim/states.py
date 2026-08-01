@@ -37,7 +37,7 @@ class StateVector:
 
 
     @property
-    def number_of_dimensions(self):
+    def dimension(self):
         '''
         Return the number of dimensions of the state
         vector.

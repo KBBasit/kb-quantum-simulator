@@ -30,7 +30,7 @@ class StateVector:
     @property
     def num_qubits(self):
         '''
-        Return the number of qubits represented by this 
+        Return the number of qubits represented by the 
         state vector.
         '''
         return int(np.log2(self.amplitudes.size))
@@ -56,4 +56,12 @@ class StateVector:
 
         amplitudes = np.zeros(2 ** num_qubits, dtype=np.complex128)
         amplitudes[0] = 1.0
+
         return cls(amplitudes)
+
+
+    def copy(self):
+        '''
+        Return a copy of the state vector.
+        '''
+        return StateVector(self.amplitudes.copy())

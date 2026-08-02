@@ -42,6 +42,14 @@ class Operator:
         return np.allclose(self.matrix.conj().T @ self.matrix, identity)
 
 
+    @property
+    def operator_qubits(self):
+        '''
+        Return the number of qubits the operator acts on.
+        '''
+        return int(np.log2(self.dimension))
+
+
     def apply_gate(self, state_vector):
         '''
         Apply the operator to a given state vector and return
@@ -89,7 +97,7 @@ class Operator:
         tensor_matrix = np.kron(self.matrix, other.matrix)
 
         return Operator(tensor_matrix)
-
+    
 
     def apply_gate_on_register(self, state_vector, qubit_indices):
         '''

@@ -47,7 +47,7 @@ class Operator:
         '''
         Return the number of qubits the operator acts on.
         '''
-        return int(np.log2(self.dimension))
+        return int(np.log2(self.matrix.shape[0]))
 
 
     def apply_gate(self, state_vector):
@@ -104,6 +104,9 @@ class Operator:
         Apply the operator to specific qubits in a multi-qubit
         state vector.
         '''
+        if self.operator_qubits != len(qubit_indices) or len(qubit_indices) != state_vector.num_qubits:
+            raise ValueError("Number of qubit indices must match operator qubits.")
+
         if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
 

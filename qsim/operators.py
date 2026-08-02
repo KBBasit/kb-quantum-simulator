@@ -34,6 +34,9 @@ class Operator:
         Apply the operator to a given state vector and return
         the resulting state vector.
         '''
+        if not np.allclose(self.conj().T @ self.matrix, np.eye(self.dimension)):
+            raise ValueError("Operator must be unitary.")
+
         if not isinstance(state_vector, StateVector):
             raise ValueError("State vector must be a StateVector object.")
 
@@ -50,6 +53,9 @@ class Operator:
         '''
         Apply the operator to a given state vector in place.
         '''
+        if not np.allclose(self.conj().T @ self.matrix, np.eye(self.dimension)):
+            raise ValueError("Operator must be unitary.")
+
         if not isinstance(state_vector, StateVector):
             raise ValueError("State vector must be a StateVector object.")
 

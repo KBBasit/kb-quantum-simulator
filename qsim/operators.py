@@ -29,7 +29,7 @@ class Operator:
         return self.matrix.shape[0]
 
 
-    def apply_operator(self, state_vector):
+    def apply_gate(self, state_vector):
         '''
         Apply the operator to a given state vector and return
         the resulting state vector.
@@ -49,7 +49,7 @@ class Operator:
         return StateVector(result)
 
 
-    def apply_operator_inplace(self, state_vector):
+    def apply_gate_inplace(self, state_vector):
         '''
         Apply the operator to a given state vector in place.
         '''

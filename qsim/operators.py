@@ -55,7 +55,13 @@ class Operator:
         '''
         Apply the operator to a given state vector in place.
         '''
-        state_vector.amplitudes[:] = self.apply_operator(state_vector).amplitudes
+        if not isinstance(state_vector, StateVector):
+            raise ValueError("State vector must be a StateVector object.")
+
+        if state_vector.dimension != self.dimension:
+            raise ValueError("State vector size must match operator dimension.")
+
+        state_vector.amplitudes[:] = self.matrix @ state_vector.amplitudes
 
     
     def tensor_product(self, other):

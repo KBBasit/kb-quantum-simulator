@@ -56,3 +56,15 @@ class Operator:
         Apply the operator to a given state vector in place.
         '''
         state_vector.amplitudes[:] = self.apply_operator(state_vector).amplitudes
+
+    
+    def tensor_product(self, other):
+        '''
+        Compute the tensor product of this operator with another
+        operator and return a new Operator instance.
+        '''
+        if not isinstance(other, Operator):
+            raise ValueError("Other must be an Operator object.")
+
+        tensor_matrix = np.kron(self.matrix, other.matrix)
+        return Operator(tensor_matrix)

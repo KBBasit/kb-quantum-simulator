@@ -64,4 +64,3 @@ def test_t_gate_properties():
 
     assert is_unitary(t)
     assert np.allclose(t @ t, gates.s_gate())
-

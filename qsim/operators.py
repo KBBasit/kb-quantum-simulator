@@ -10,13 +10,16 @@ from qsim.states import StateVector
 
 class Operator:
     '''
-    A class representing a quantum operator (gate).
+    A class for representing quantum operators.
     '''
     def __init__(self, matrix):
         matrix = np.asarray(matrix, dtype=np.complex128)
 
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
             raise ValueError("Operator must be a square matrix.")
+
+        if matrix.shape[0] & (matrix.shape[0] - 1) != 0:
+            raise ValueError("Operator dimension must be a power of 2.")
 
         self.matrix = matrix
 
@@ -74,4 +77,5 @@ class Operator:
             raise ValueError("Other must be an Operator object.")
 
         tensor_matrix = np.kron(self.matrix, other.matrix)
+
         return Operator(tensor_matrix)

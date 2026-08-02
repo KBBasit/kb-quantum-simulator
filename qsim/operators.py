@@ -20,7 +20,7 @@ class Operator:
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
             raise ValueError("Operator must be a square matrix.")
 
-        if not np.allclose(matrix.conj().T @ matrix, np.eye(matrix.shape[0]), dtype=np.complex128):
+        if not np.allclose(matrix.conj().T @ matrix, np.eye(matrix.shape[0], dtype=np.complex128)):
             raise ValueError("Operator must be unitary.")
 
         self.matrix = matrix

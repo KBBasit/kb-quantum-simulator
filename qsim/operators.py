@@ -34,9 +34,10 @@ class Operator:
         return self.matrix.shape[0]
 
 
-    def apply_operator_inplace(self, state_vector):
+    def apply_operator(self, state_vector):
         '''
-        Apply the operator to a given state vector in place.
+        Apply the operator to a given state vector and return
+        the resulting state vector.
         '''
         if not isinstance(state_vector, StateVector):
             raise ValueError("State vector must be a StateVector object.")
@@ -47,7 +48,11 @@ class Operator:
         # Perform matrix-vector multiplication
         result = self.matrix @ state_vector.amplitudes
 
-        # Update the state vector in place
-        state_vector.amplitudes[:] = result
+        return StateVector(result)
 
-    
+
+    def apply_operator_inplace(self, state_vector):
+        '''
+        Apply the operator to a given state vector in place.
+        '''
+        state_vector.amplitudes[:] = self.apply_operator(state_vector).amplitudes

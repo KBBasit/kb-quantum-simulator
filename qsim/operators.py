@@ -52,8 +52,8 @@ class Operator:
 
     def apply_gate(self, state_vector):
         '''
-        Apply the operator to a given state vector and return
-        the resulting state vector.
+        Apply the operator to a given state vector and
+        return the resulting state vector.
         '''
         if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
@@ -72,7 +72,8 @@ class Operator:
 
     def apply_gate_inplace(self, state_vector):
         '''
-        Apply the operator to a given state vector in place.
+        Apply the operator to a given state vector in
+        place.
         '''
         if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
@@ -88,8 +89,9 @@ class Operator:
     
     def tensor_product(self, other):
         '''
-        Compute the tensor product of this operator with another
-        operator and return a new Operator instance.
+        Compute the tensor product of this operator with
+        another operator and return a new Operator
+        instance.
         '''
         if not isinstance(other, Operator):
             raise TypeError("Other must be an Operator object.")
@@ -99,31 +101,35 @@ class Operator:
         return Operator(tensor_matrix)
     
 
-    def apply_gate_on_register(self, state_vector, qubit_indices):
+    def apply_single_qubit_gate_on_register(self, state_vector, target_qubit):
         '''
-        Apply the operator to specific qubits in a multi-qubit
-        state vector.
+        Apply a single-qubit gate to one qubit in a
+        multi-qubit state.
         '''
-        if self.operator_qubits != len(qubit_indices) or len(qubit_indices) != state_vector.num_qubits:
-            raise ValueError("Number of qubit indices must match operator qubits.")
+        if not isinstance(state_vector, StateVector):
+            raise TypeError("State vector must be a StateVector object.")
+
+        if self.dimension != 2:
+            raise ValueError("This method only supports single-qubit operators.")
+
+        if not isinstance(target_qubit, int):
+            raise TypeError("Target qubit must be an integer.")
+
+        if target_qubit < 0 or target_qubit >= state_vector.num_qubits:
+            raise ValueError("Target qubit index must be non-negative and valid for the state vector.")
 
         if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
 
-        if not isinstance(state_vector, StateVector):
-            raise TypeError("State vector must be a StateVector object.")
-
-        num_qubits = state_vector.num_qubits
-        if any(qi < 0 or qi >= num_qubits for qi in qubit_indices):
-            raise ValueError("Qubit indices must be valid for the state vector.")
-
-        # Create a full operator for the entire register
+        # Construct the full operator for the multi-qubit system
         full_operator = np.eye(1, dtype=np.complex128)
-        for i in range(num_qubits):
-            if i in qubit_indices:
-                full_operator = np.kron(full_operator, self.matrix)
+        for i in range(state_vector.num_qubits):
+            if i == target_qubit:
+                next_operator = self.matrix
             else:
-                full_operator = np.kron(full_operator, np.eye(2, dtype=np.complex128))
+                next_operator = np.eye(2, dtype=np.complex128)
+
+            full_operator = np.kron(full_operator, next_operator)
 
         # Apply the full operator to the state vector
         result = full_operator @ state_vector.amplitudes

@@ -1,9 +1,8 @@
 '''
 Quantum gates are the building blocks of quantum circuits
-that change the state of qubits.
-This module is for the design of quantum gates using NumPy
-arrays. Every quantum gate has a complex data type
-specified for ease of later multiplication.
+that change the state of qubits. This module provides
+implementations of some common quantum gates using NumPy
+arrays.
 '''
 
 import numpy as np

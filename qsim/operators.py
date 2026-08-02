@@ -32,16 +32,26 @@ class Operator:
         return self.matrix.shape[0]
 
 
+    @property
+    def is_unitary(self):
+        '''
+        Check if the operator is unitary.
+        '''
+        identity = np.eye(self.dimension, dtype=np.complex128)
+
+        return np.allclose(self.matrix.conj().T @ self.matrix, identity)
+
+
     def apply_gate(self, state_vector):
         '''
         Apply the operator to a given state vector and return
         the resulting state vector.
         '''
-        if not np.allclose(self.conj().T @ self.matrix, np.eye(self.dimension)):
+        if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
 
         if not isinstance(state_vector, StateVector):
-            raise ValueError("State vector must be a StateVector object.")
+            raise TypeError("State vector must be a StateVector object.")
 
         if state_vector.dimension != self.dimension:
             raise ValueError("State vector size must match operator dimension.")
@@ -56,11 +66,11 @@ class Operator:
         '''
         Apply the operator to a given state vector in place.
         '''
-        if not np.allclose(self.conj().T @ self.matrix, np.eye(self.dimension)):
+        if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
 
         if not isinstance(state_vector, StateVector):
-            raise ValueError("State vector must be a StateVector object.")
+            raise TypeError("State vector must be a StateVector object.")
 
         if state_vector.dimension != self.dimension:
             raise ValueError("State vector size must match operator dimension.")
@@ -74,8 +84,37 @@ class Operator:
         operator and return a new Operator instance.
         '''
         if not isinstance(other, Operator):
-            raise ValueError("Other must be an Operator object.")
+            raise TypeError("Other must be an Operator object.")
 
         tensor_matrix = np.kron(self.matrix, other.matrix)
 
         return Operator(tensor_matrix)
+
+
+    def apply_gate_on_register(self, state_vector, qubit_indices):
+        '''
+        Apply the operator to specific qubits in a multi-qubit
+        state vector.
+        '''
+        if not self.is_unitary:
+            raise ValueError("Operator must be unitary.")
+
+        if not isinstance(state_vector, StateVector):
+            raise TypeError("State vector must be a StateVector object.")
+
+        num_qubits = state_vector.num_qubits
+        if any(qi < 0 or qi >= num_qubits for qi in qubit_indices):
+            raise ValueError("Qubit indices must be valid for the state vector.")
+
+        # Create a full operator for the entire register
+        full_operator = np.eye(1, dtype=np.complex128)
+        for i in range(num_qubits):
+            if i in qubit_indices:
+                full_operator = np.kron(full_operator, self.matrix)
+            else:
+                full_operator = np.kron(full_operator, np.eye(2, dtype=np.complex128))
+
+        # Apply the full operator to the state vector
+        result = full_operator @ state_vector.amplitudes
+
+        return StateVector(result)

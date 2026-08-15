@@ -50,19 +50,21 @@ class Operator:
         return int(np.log2(self.matrix.shape[0]))
 
 
+    def _validate_gate_application(self, state_vector):
+        if not self.is_unitary:
+            raise ValueError("Operator must be unitary.")
+        if not isinstance(state_vector, StateVector):
+            raise TypeError("State vector must be a StateVector object.")
+        if state_vector.dimension != self.dimension:
+            raise ValueError("State vector size must match operator dimension.")
+
+
     def apply_gate(self, state_vector):
         '''
         Apply the operator to a given state vector and
         return the resulting state vector.
         '''
-        if not self.is_unitary:
-            raise ValueError("Operator must be unitary.")
-
-        if not isinstance(state_vector, StateVector):
-            raise TypeError("State vector must be a StateVector object.")
-
-        if state_vector.dimension != self.dimension:
-            raise ValueError("State vector size must match operator dimension.")
+        self._validate_gate_application(state_vector)
 
         # Perform matrix-vector multiplication
         result = self.matrix @ state_vector.amplitudes
@@ -75,14 +77,7 @@ class Operator:
         Apply the operator to a given state vector in
         place.
         '''
-        if not self.is_unitary:
-            raise ValueError("Operator must be unitary.")
-
-        if not isinstance(state_vector, StateVector):
-            raise TypeError("State vector must be a StateVector object.")
-
-        if state_vector.dimension != self.dimension:
-            raise ValueError("State vector size must match operator dimension.")
+        self._validate_gate_application(state_vector)
 
         state_vector.amplitudes[:] = self.matrix @ state_vector.amplitudes
 

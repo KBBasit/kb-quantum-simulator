@@ -51,10 +51,10 @@ class Operator:
 
 
     def _validate_gate_application(self, state_vector):
-        if not self.is_unitary:
-            raise ValueError("Operator must be unitary.")
         if not isinstance(state_vector, StateVector):
             raise TypeError("State vector must be a StateVector object.")
+        if not self.is_unitary:
+            raise ValueError("Operator must be unitary.")
         if state_vector.dimension != self.dimension:
             raise ValueError("State vector size must match operator dimension.")
 

@@ -94,39 +94,3 @@ class Operator:
         tensor_matrix = np.kron(self.matrix, other.matrix)
 
         return Operator(tensor_matrix)
-    
-
-    def apply_single_qubit_gate_on_register(self, state_vector, target_qubit):
-        '''
-        Apply a single-qubit gate to one qubit in a
-        multi-qubit state.
-        '''
-        if not isinstance(state_vector, StateVector):
-            raise TypeError("State vector must be a StateVector object.")
-
-        if self.dimension != 2:
-            raise ValueError("This method only supports single-qubit operators.")
-
-        if not isinstance(target_qubit, int):
-            raise TypeError("Target qubit must be an integer.")
-
-        if target_qubit < 0 or target_qubit >= state_vector.num_qubits:
-            raise ValueError("Target qubit index must be non-negative and valid for the state vector.")
-
-        if not self.is_unitary:
-            raise ValueError("Operator must be unitary.")
-
-        # Construct the full operator for the multi-qubit system
-        full_operator = np.eye(1, dtype=np.complex128)
-        for i in range(state_vector.num_qubits):
-            if i == target_qubit:
-                next_operator = self.matrix
-            else:
-                next_operator = np.eye(2, dtype=np.complex128)
-
-            full_operator = np.kron(full_operator, next_operator)
-
-        # Apply the full operator to the state vector
-        result = full_operator @ state_vector.amplitudes
-
-        return StateVector(result)

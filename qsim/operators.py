@@ -59,29 +59,6 @@ class Operator:
             raise ValueError("State vector size must match operator dimension.")
 
 
-    def apply_gate(self, state_vector):
-        '''
-        Apply the operator to a given state vector and
-        return the resulting state vector.
-        '''
-        self._validate_gate_application(state_vector)
-
-        # Perform matrix-vector multiplication
-        result = self.matrix @ state_vector.amplitudes
-
-        return StateVector(result)
-
-
-    def apply_gate_inplace(self, state_vector):
-        '''
-        Apply the operator to a given state vector in
-        place.
-        '''
-        self._validate_gate_application(state_vector)
-
-        state_vector.amplitudes[:] = self.matrix @ state_vector.amplitudes
-
-
     def apply(self, state_vector, target_qubits = (0,), inplace=False):
         '''
         Apply the operator to a given state vector.

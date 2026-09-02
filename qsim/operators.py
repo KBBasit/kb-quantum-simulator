@@ -81,4 +81,32 @@ class Operator:
 
         state_vector.amplitudes[:] = self.matrix @ state_vector.amplitudes
 
+
+    def apply(self, state_vector, target_qubits = (0,), inplace=False):
+        '''
+        Apply the operator to a given state vector.
+        '''
+        self._validate_gate_application(state_vector)
+
+        tensor = state_vector.amplitudes.reshape([2] * state_vector.num_qubits)
+        tensor = np.moveaxis(tensor, target_qubits, range(len(target_qubits)))
+
+        matrix = tensor.reshape(self.dimension, -1)
+
+        result = self.matrix @ matrix
+        result = result.reshape([2] * state_vector.num_qubits)
+        result = np.moveaxis(result, range(len(target_qubits)), target_qubits)
+        result = result.reshape(2 ** state_vector.num_qubits)
+
+        if inplace:
+            state_vector.amplitudes[:] = result
+            return state_vector
+
+        return StateVector(result)
+
+
+
+
         
+        
+

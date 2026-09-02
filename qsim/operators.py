@@ -59,9 +59,10 @@ class Operator:
             raise ValueError("State vector size must match operator dimension.")
 
 
-    def apply(self, state_vector, target_qubits = (0,), inplace=False):
+    def apply_gate(self, state_vector, target_qubits = (0,), inplace=False):
         '''
-        Apply the operator to a given state vector.
+        Apply the operator to the given state vector on the
+        specified target qubits.
         '''
         self._validate_gate_application(state_vector)
 

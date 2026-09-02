@@ -81,16 +81,4 @@ class Operator:
 
         state_vector.amplitudes[:] = self.matrix @ state_vector.amplitudes
 
-    
-    def tensor_product(self, other):
-        '''
-        Compute the tensor product of this operator with
-        another operator and return a new Operator
-        instance.
-        '''
-        if not isinstance(other, Operator):
-            raise TypeError("Other must be an Operator object.")
-
-        tensor_matrix = np.kron(self.matrix, other.matrix)
-
-        return Operator(tensor_matrix)
+        

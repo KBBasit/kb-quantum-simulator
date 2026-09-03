@@ -3,6 +3,7 @@ import numpy as np
 import pytest
 
 
+
 def test_state_vector_initialization():
     amplitudes = [1/np.sqrt(2), 1/np.sqrt(2)]
     state_vector = states.StateVector(amplitudes)
@@ -13,7 +14,7 @@ def test_state_vector_initialization():
     assert np.allclose(state_vector.amplitudes, amplitudes)
 
 
-def test_zero_state_properties():
+def test_zero_state():
     num_qubits = 3 # Test for a 3-qubit zero state as an example
     zero_state = states.StateVector.zero_state(num_qubits)
 
@@ -32,6 +33,9 @@ def test_copy_state_vector():
     assert copied_state_vector.num_qubits == state_vector.num_qubits
     assert copied_state_vector.dimension == state_vector.dimension
     assert np.allclose(copied_state_vector.amplitudes, state_vector.amplitudes)
+
+    assert copied_state_vector is not state_vector
+    assert copied_state_vector.amplitudes is not state_vector.amplitudes
 
 
 def test_non_normalized_state_vector():

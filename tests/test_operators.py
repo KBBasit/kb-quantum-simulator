@@ -1,3 +1,4 @@
+from qsim import states
 from qsim import operators
 import numpy as np
 import pytest
@@ -24,9 +25,9 @@ def test_operator_initialization():
 def test_operator_application():
     matrix = [[0, 1], [1, 0]]  # Pauli-X gate
     operator = operators.Operator(matrix)
-    state_vector = operators.StateVector([1, 0])  # |0> state
+    state_vector_1 = states.StateVector([1, 0])  # |0> state
 
-    result_state_vector = operator.apply_gate(state_vector, target_qubits=(0,), inplace=False)
+    result_state_vector = operator.apply_gate(state_vector_1, target_qubits=(0,), inplace=False)
 
     assert np.allclose(result_state_vector.amplitudes, [0, 1])  # |1> state after applying X gate
 

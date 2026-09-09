@@ -64,13 +64,11 @@ def t_gate():
         [0,np.exp(1j * np.pi / 4)]], dtype=np.complex128)
 
 
-def identity():
+def identity(dim=2):
     '''
-    Return the 2x2 identity matrix
+    Return the identity gate of specified dimension.
     '''
-    return np.array([
-        [1,0],
-        [0,1]], dtype=np.complex128)
+    return np.eye(dim, dtype=np.complex128)
 
 
 def cnot():

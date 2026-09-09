@@ -5,7 +5,7 @@ import pytest
 
 
 
-def test_operator_initialization():
+def test_operator_initialisation():
     matrix = [[1, 0], [0, 1]]
     operator = operators.Operator(matrix)
 
@@ -13,11 +13,11 @@ def test_operator_initialization():
     assert operator.is_unitary
     assert operator.operator_qubits == 1
 
-    # Test invalid operator initialization (non-square matrix)
+    # Test invalid operator initialisation (non-square matrix)
     with pytest.raises(ValueError, match="Operator must be a square matrix."):
         operators.Operator([[1, 0], [0, 1], [1, 0]])  # Non-square matrix
 
-    # Test invalid operator initialization (dimension not a power of 2)
+    # Test invalid operator initialisation (dimension not a power of 2)
     with pytest.raises(ValueError, match="Operator dimension must be a power of 2."):
         operators.Operator([[1, 0, 0], [0, 1, 0], [0, 0, 1]])  # Dimension not a power of 2
 

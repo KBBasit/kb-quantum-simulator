@@ -4,7 +4,7 @@ import pytest
 
 
 
-def test_state_vector_initialization():
+def test_state_vector_initialisation():
     amplitudes = [1/np.sqrt(2), 1/np.sqrt(2)]
     state_vector = states.StateVector(amplitudes)
 

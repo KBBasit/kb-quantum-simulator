@@ -1,3 +1,4 @@
+from qsim import gates
 from qsim import states
 from qsim import operators
 import numpy as np
@@ -13,13 +14,11 @@ def test_operator_initialisation():
     assert operator.is_unitary
     assert operator.operator_qubits == 1
 
-    # Test invalid operator initialisation (non-square matrix)
     with pytest.raises(ValueError, match="Operator must be a square matrix."):
-        operators.Operator([[1, 0], [0, 1], [1, 0]])  # Non-square matrix
+        operators.Operator([[1, 0], [0, 1], [1, 0]])
 
-    # Test invalid operator initialisation (dimension not a power of 2)
     with pytest.raises(ValueError, match="Operator dimension must be a power of 2."):
-        operators.Operator([[1, 0, 0], [0, 1, 0], [0, 0, 1]])  # Dimension not a power of 2
+        operators.Operator([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
 
 
 def test_operator_application_validations():
@@ -30,42 +29,63 @@ def test_operator_application_validations():
     cnot_operator = operators.Operator(cnot_matrix)
     state_vector = states.StateVector([1, 0, 0, 0]) 
 
-    # Test invalid state vector type
     with pytest.raises(TypeError, match="State vector must be a StateVector object."):
         cnot_operator.apply_gate([1, 0, 0, 0], target_qubits=(0, 1), inplace=False)
 
-    # Test non-unitary operator
     non_unitary_matrix = [[1, 0, 0, 0],
                           [0, 1, 0, 0],
                           [0, 0, 1, 0],
                           [0, 0, 1, 0]]
     non_unitary_operator = operators.Operator(non_unitary_matrix)
+
     with pytest.raises(ValueError, match="Operator must be unitary."):
         non_unitary_operator.apply_gate(state_vector, target_qubits=(0, 1), inplace=False)
 
-    # Test invalid target qubits type 
     with pytest.raises(TypeError, match="Target qubits must be integers."):
         cnot_operator.apply_gate(state_vector, target_qubits=('0', '1'), inplace=False)
 
-    # Test mismatched number of target qubits
     with pytest.raises(ValueError, match="Number of target qubits must match the operator's qubit count."):
         cnot_operator.apply_gate(state_vector, target_qubits=(0,), inplace=False)
 
-    # Test out-of-bounds target qubit index
     with pytest.raises(ValueError, match="Target qubits must be within the range of the state vector's qubits."):
         cnot_operator.apply_gate(state_vector, target_qubits=(0, 2), inplace=False)
 
-    # Test target qubits are unique
     with pytest.raises(ValueError, match="Target qubits must be unique."):
         cnot_operator.apply_gate(state_vector, target_qubits=(0, 0), inplace=False)
 
 
 def test_operator_application():
-    matrix = [[0, 1], [1, 0]]  # Pauli-X gate
-    operator = operators.Operator(matrix)
-    state_vector_1 = states.StateVector([1, 0])  # |0> state
+    matrix_1 = gates.pauli_x()
+    matrix_2 = gates.pauli_y() 
+    matrix_3 = [[1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 0, 1],
+                [0, 0, 1, 0]]
+    operator_1 = operators.Operator(matrix_1)
+    operator_2 = operators.Operator(matrix_2)
+    operator_3 = operators.Operator(matrix_3)
 
-    result_state_vector = operator.apply_gate(state_vector_1, target_qubits=(0,), inplace=False)
+    state_vector_1 = states.StateVector([1, 0])
+    state_vector_2 = states.StateVector([0, 1])
+    state_vector_3 = states.StateVector(1/np.sqrt(2) * np.array([1, 0, 1, 0]))
+    state_vector_4 = states.StateVector([1, 0, 0, 0, 0, 0, 0, 0])
+    state_vector_5 = states.StateVector(1/np.sqrt(2) * np.array([1, 0, 0, 0, 1, 0, 0, 0]))
 
-    assert np.allclose(result_state_vector.amplitudes, [0, 1])  # |1> state after applying X gate
+    result_state_vector_1 = operator_1.apply_gate(state_vector_1, target_qubits=(0,), inplace=False)
+    assert result_state_vector_1 is not state_vector_1
+    assert np.allclose(result_state_vector_1.amplitudes, [0, 1])
 
+    result_state_vector_2 = operator_2.apply_gate(state_vector_2, target_qubits=(0,), inplace=True)
+    assert np.allclose(result_state_vector_2.amplitudes, [-1j, 0])
+    assert result_state_vector_2 is state_vector_2
+
+    result_state_vector_3 = operator_3.apply_gate(state_vector_3, target_qubits=(0, 1), inplace=False)
+    assert np.allclose(result_state_vector_3.amplitudes, 1/np.sqrt(2) * np.array([1, 0, 0, 1]))
+
+    temp_state_vector_4 = state_vector_4.copy()
+    for q in (0,2):
+        temp_state_vector_4 = operator_1.apply_gate(temp_state_vector_4, target_qubits=(q,), inplace=False)
+    assert np.allclose(temp_state_vector_4.amplitudes, [0, 0, 0, 0, 0, 1, 0, 0])
+
+    result_state_vector_5 = operator_3.apply_gate(state_vector_5, target_qubits=(0, 2), inplace=False)
+    assert np.allclose(result_state_vector_5.amplitudes, 1/np.sqrt(2) * np.array([1, 0, 0, 0, 0, 1, 0, 0]))

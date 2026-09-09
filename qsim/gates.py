@@ -68,6 +68,9 @@ def identity(dim=2):
     '''
     Return the identity gate of specified dimension.
     '''
+    if dim < 1 or (dim & (dim - 1)) != 0:
+        raise ValueError("Identity dimension must be a power of 2.")
+
     return np.eye(dim, dtype=np.complex128)
 
 

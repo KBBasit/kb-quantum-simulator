@@ -7,7 +7,7 @@ import pytest
 
 
 def test_operator_initialisation():
-    matrix = [[1, 0], [0, 1]]
+    matrix = gates.identity()
     operator = operators.Operator(matrix)
 
     assert operator.dimension == 2
@@ -22,10 +22,7 @@ def test_operator_initialisation():
 
 
 def test_operator_application_validations():
-    cnot_matrix = [[1, 0, 0, 0],
-                   [0, 1, 0, 0],
-                   [0, 0, 0, 1],
-                   [0, 0, 1, 0]]
+    cnot_matrix = gates.cnot()
     cnot_operator = operators.Operator(cnot_matrix)
     state_vector = states.StateVector([1, 0, 0, 0]) 
 
@@ -57,10 +54,7 @@ def test_operator_application_validations():
 def test_operator_application():
     matrix_1 = gates.pauli_x()
     matrix_2 = gates.pauli_y() 
-    matrix_3 = [[1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]]
+    matrix_3 = gates.cnot()
     operator_1 = operators.Operator(matrix_1)
     operator_2 = operators.Operator(matrix_2)
     operator_3 = operators.Operator(matrix_3)

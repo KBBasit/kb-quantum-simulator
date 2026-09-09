@@ -1,5 +1,6 @@
 from qsim import gates
 import numpy as np
+import pytest
 
 
 
@@ -14,7 +15,7 @@ def _is_unitary(matrix):
 
 
 def test_validate_identity():
-    identity_2 = gates.identity()
+    identity_2 = gates.identity(dim=2)
     identity_4 = gates.identity(dim=4)
 
     assert identity_2.shape == (2, 2)
@@ -22,6 +23,9 @@ def test_validate_identity():
 
     assert np.allclose(identity_2 @ gates.pauli_x(), gates.pauli_x())
     assert np.allclose(identity_4 @ gates.cnot(), gates.cnot())
+
+    with pytest.raises(ValueError, match="Identity dimension must be a power of 2."):
+        gates.identity(3)
 
 
 def test_pauli_x_properties():

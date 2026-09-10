@@ -1,4 +1,3 @@
-import numpy as np
 from qsim.operators import Operator
 
 
@@ -10,6 +9,14 @@ class Circuit:
 
         self.num_qubits = num_qubits
         self.gates = []
+
+
+    def __repr__(self):
+        return f"Circuit(num_qubits={self.num_qubits}, gates={self.gates})"
+
+
+    def __len__(self):
+        return len(self.gates)
 
 
     def add_gate(self, operator, target_qubits):

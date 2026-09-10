@@ -40,38 +40,50 @@ class Circuit:
     def pauli_x(self, target_qubit):
         self.add_gate(Operator(gates.pauli_x()), (target_qubit,))
 
+
     def pauli_y(self, target_qubit):
         self.add_gate(Operator(gates.pauli_y()), (target_qubit,))
+
 
     def pauli_z(self, target_qubit):
         self.add_gate(Operator(gates.pauli_z()), (target_qubit,))
 
+
     def hadamard(self, target_qubit):
         self.add_gate(Operator(gates.hadamard()), (target_qubit,))
+
 
     def s_gate(self, target_qubit):
         self.add_gate(Operator(gates.s_gate()), (target_qubit,))
 
+
     def t_gate(self, target_qubit):
         self.add_gate(Operator(gates.t_gate()), (target_qubit,))
+
 
     def cnot(self, control_qubit, target_qubit):
         self.add_gate(Operator(gates.cnot()), (control_qubit, target_qubit))
 
+
     def controlled_z(self, control_qubit, target_qubit):
         self.add_gate(Operator(gates.controlled_z()), (control_qubit, target_qubit))
+
 
     def swap(self, qubit1, qubit2):
         self.add_gate(Operator(gates.swap()), (qubit1, qubit2))
 
+
     def r_x(self, target_qubit, theta):
         self.add_gate(Operator(gates.r_x(theta)), (target_qubit,))
+
 
     def r_y(self, target_qubit, theta):
         self.add_gate(Operator(gates.r_y(theta)), (target_qubit,))
 
+
     def r_z(self, target_qubit, theta):
         self.add_gate(Operator(gates.r_z(theta)), (target_qubit,))
+
     
     def phase_gate(self, target_qubit, theta):
         self.add_gate(Operator(gates.phase_gate(theta)), (target_qubit,))

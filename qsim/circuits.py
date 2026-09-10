@@ -12,12 +12,12 @@ class Circuit:
         self.gates = []
 
 
-    def __repr__(self):
-        return f"Circuit(num_qubits={self.num_qubits}, gates={self.gates})"
-
-
     def __len__(self):
         return len(self.gates)
+
+
+    def __repr__(self):
+        return f"Circuit(num_qubits={self.num_qubits}, num_gates={len(self)})"
 
 
     def add_gate(self, operator, target_qubits):
@@ -69,7 +69,7 @@ class Circuit:
 
     def r_y(self, target_qubit, theta):
         self.add_gate(Operator(gates.r_y(theta)), (target_qubit,))
-    
+
     def r_z(self, target_qubit, theta):
         self.add_gate(Operator(gates.r_z(theta)), (target_qubit,))
     

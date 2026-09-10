@@ -1,5 +1,6 @@
 from qsim import gates
 from qsim import circuits
+import numpy as np
 import pytest
 
 
@@ -38,3 +39,157 @@ def test_add_gate_validations():
 
     with pytest.raises(ValueError, match="Target qubits must be within the range of the circuit's qubits."):
         circuit.add_gate(operator, target_qubits=(0, 3))
+
+
+def test_pauli_x_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.pauli_x(target_qubit=0)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.pauli_x())
+    assert target_qubits == (0,)
+
+
+def test_pauli_y_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.pauli_y(target_qubit=1)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.pauli_y())
+    assert target_qubits == (1,)
+
+
+def test_pauli_z_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.pauli_z(target_qubit=0)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.pauli_z())
+    assert target_qubits == (0,)
+
+
+def test_hadamard_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.hadamard(target_qubit=1)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.hadamard())
+    assert target_qubits == (1,)
+
+
+def test_s_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.s_gate(target_qubit=0)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.s_gate())
+    assert target_qubits == (0,)
+
+
+def test_t_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.t_gate(target_qubit=1)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.t_gate())
+    assert target_qubits == (1,)
+
+
+def test_cnot_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.cnot(control_qubit=0, target_qubit=1)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.cnot())
+    assert target_qubits == (0, 1)
+
+
+def controlled_z_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.controlled_z(control_qubit=0, target_qubit=1)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.controlled_z())
+    assert target_qubits == (0, 1)
+
+
+def swap_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.add_gate(circuits.Operator(gates.swap()), target_qubits=(0, 1))
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.swap())
+    assert target_qubits == (0, 1)
+
+
+def r_x_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    theta = np.pi / 4
+    circuit.r_x(target_qubit=0, theta=theta)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.r_x(theta))
+    assert target_qubits == (0,)
+
+
+def r_y_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    theta = np.pi / 4
+    circuit.r_y(target_qubit=1, theta=theta)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.r_y(theta))
+    assert target_qubits == (1,)
+
+
+def r_z_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    theta = np.pi / 4
+    circuit.r_z(target_qubit=0, theta=theta)
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.r_z(theta))
+    assert target_qubits == (0,)
+
+
+def phase_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    theta = np.pi / 4
+    circuit.add_gate(circuits.Operator(gates.phase_gate(theta)), target_qubits=(1,))
+
+    operator, target_qubits = circuit.gates[0]
+
+    assert np.allclose(operator.matrix, gates.phase_gate(theta))
+    assert target_qubits == (1,)
+
+
+def test_length_of_circuit():
+    circuit = circuits.Circuit(num_qubits=2)
+    assert len(circuit) == 0
+
+    circuit.pauli_x(target_qubit=0)
+    assert len(circuit) == 1
+
+    circuit.cnot(control_qubit=0, target_qubit=1)
+    assert len(circuit) == 2
+
+
+def test_representation_of_circuit():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.pauli_x(target_qubit=0)
+    circuit.cnot(control_qubit=0, target_qubit=1)
+
+    expected_repr = "Circuit(num_qubits=2, num_gates=2)"
+    assert repr(circuit) == expected_repr

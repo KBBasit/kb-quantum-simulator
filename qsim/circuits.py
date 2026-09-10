@@ -15,6 +15,8 @@ class Circuit:
     def add_gate(self, operator, target_qubits):
         if not isinstance(operator, Operator):
             raise TypeError("Operator must be an instance of the Operator class.")
+        if not isinstance(target_qubits, tuple):
+            raise TypeError("Target qubits must be a tuple.")
         if not all(isinstance(q, int) for q in target_qubits):
             raise TypeError("Target qubits must be integers.")
         if len(set(target_qubits)) != len(target_qubits):

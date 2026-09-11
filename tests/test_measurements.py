@@ -42,6 +42,8 @@ def test_invalid_input_for_sampling():
         measurements.sample(state, shots="ten")
     with pytest.raises(ValueError, match="Shots must be a positive integer."):
         measurements.sample(state, shots=-5)
+    with pytest.raises(ValueError, match="Shots must be a positive integer."):
+        measurements.sample(state, shots=0)
 
 
 def test_sampling():

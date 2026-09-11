@@ -55,7 +55,7 @@ def measure(state_vector):
 
 def sample(state_vector, shots):
     """
-    Sample measurement outcomes from the state vecotr's
+    Sample measurement outcomes from the state vector's
     probability distribution.
 
     Parameters:
@@ -66,7 +66,7 @@ def sample(state_vector, shots):
         list: A list of bitstrings corresponding to the measured basis states.
 
     Raises:
-        TypeError: If state_vector is not an instance of StateVector.
+        TypeError: If state_vector is not an instance of StateVector or if shots is not an integer.
         ValueError: If shots is not a positive integer.
     """
     if not isinstance(state_vector, StateVector):

@@ -71,7 +71,9 @@ def sample(state_vector, shots):
     """
     if not isinstance(state_vector, StateVector):
         raise TypeError("Input must be a StateVector object.")
-    if not isinstance(shots, int) or shots <= 0:
+    if not isinstance(shots, int):
+        raise TypeError("Shots must be an integer.")
+    if shots <= 0:
         raise ValueError("Shots must be a positive integer.")
 
     probabilities = measurement_probabilities(state_vector)

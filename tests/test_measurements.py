@@ -53,3 +53,12 @@ def test_sampling():
 
     assert len(samples) == shots
     assert all(bitstring in ['00', '11'] for bitstring in samples)
+
+
+def test_sampling_does_not_modify_state_vector():
+    state_vector = states.StateVector(1/np.sqrt(2) * np.array([1, 0, 0, 1]))
+    original_amplitudes = state_vector.amplitudes.copy()
+    shots = 1000
+    measurements.sample(state_vector, shots)
+
+    assert np.allclose(state_vector.amplitudes, original_amplitudes)

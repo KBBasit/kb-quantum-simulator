@@ -19,6 +19,6 @@ class StatevectorSimulator:
 
         state = initial_state.copy()
         for operator, target_qubits in circuit.gates:
-            state.apply_operator(operator, target_qubits, inplace=True)
+            operator.apply_gate(state, target_qubits, inplace=True)
 
         return state

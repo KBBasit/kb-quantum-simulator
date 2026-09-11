@@ -55,9 +55,8 @@ def measure(state_vector):
 
 def sample(state_vector, shots):
     """
-    Perform multiple measurements on the quantum state
-    vector and return a list of bitstrings corresponding to
-    the measured basis states.
+    Sample measurement outcomes from the state vecotr's
+    probability distribution.
 
     Parameters:
         state_vector (StateVector): The quantum state vector.

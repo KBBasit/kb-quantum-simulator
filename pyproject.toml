@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qsim"
+version = "0.1.0"
+description = "A quantum circuit simulator."
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+]
+
+[tool.setuptools.packages.find]
+include = ["qsim*"]

@@ -1,5 +1,5 @@
-from qsim.states import StateVector
-from qsim.circuits import Circuit
+from .states import StateVector
+from .circuits import Circuit
 
 
 

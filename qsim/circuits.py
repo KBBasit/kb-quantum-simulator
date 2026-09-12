@@ -3,8 +3,8 @@ This module defines the Circuit class, which represents a
 quantum circuit composed of quantum gates.
 '''
 
-from qsim import gates
-from qsim.operators import Operator
+from . import gates
+from .operators import Operator
 
 
 

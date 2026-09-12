@@ -1,5 +1,5 @@
 import numpy as np
-from qsim.states import StateVector
+from .states import StateVector
 
 
 

@@ -111,7 +111,7 @@ def test_cnot_gate_addition():
     assert target_qubits == (0, 1)
 
 
-def controlled_z_gate_addition():
+def test_controlled_z_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.controlled_z(control_qubit=0, target_qubit=1)
 
@@ -121,7 +121,7 @@ def controlled_z_gate_addition():
     assert target_qubits == (0, 1)
 
 
-def swap_gate_addition():
+def test_swap_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.add_gate(circuits.Operator(gates.swap()), target_qubits=(0, 1))
 
@@ -131,7 +131,7 @@ def swap_gate_addition():
     assert target_qubits == (0, 1)
 
 
-def r_x_gate_addition():
+def test_r_x_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_x(target_qubit=0, theta=theta)
@@ -142,7 +142,7 @@ def r_x_gate_addition():
     assert target_qubits == (0,)
 
 
-def r_y_gate_addition():
+def test_r_y_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_y(target_qubit=1, theta=theta)
@@ -153,7 +153,7 @@ def r_y_gate_addition():
     assert target_qubits == (1,)
 
 
-def r_z_gate_addition():
+def test_r_z_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_z(target_qubit=0, theta=theta)
@@ -164,7 +164,7 @@ def r_z_gate_addition():
     assert target_qubits == (0,)
 
 
-def phase_gate_addition():
+def test_phase_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.add_gate(circuits.Operator(gates.phase_gate(theta)), target_qubits=(1,))

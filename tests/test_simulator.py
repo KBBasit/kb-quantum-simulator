@@ -75,3 +75,13 @@ def test_statevector_simulator_run():
         assert np.allclose(final_state_7.amplitudes, np.array([0, 1]))
     else:
         assert np.allclose(final_state_7.amplitudes, np.array([1, 0]))
+
+
+def test_unknown_operation_type():
+    circuit = circuits.Circuit(num_qubits=1)
+    circuit.operations.append(("unknown", None, None))
+
+    sim = simulator.StatevectorSimulator()
+
+    with pytest.raises(ValueError, match="Unknown operation type: unknown"):
+        sim.run(circuit)

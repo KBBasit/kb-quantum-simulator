@@ -26,8 +26,10 @@ class StatevectorSimulator:
             if operation_type == "measure":
                 _, qubits, key = operation
                 measurement_results[key] = measure(state, qubits)
-            else:
+            elif operation_type == "gate":
                 _, operator, target_qubits = operation
                 operator.apply_gate(state, target_qubits, inplace=True)
+            else:
+                raise ValueError(f"Unknown operation type: {operation_type}")
 
         return state, measurement_results

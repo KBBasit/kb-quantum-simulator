@@ -1,6 +1,6 @@
 '''
 This module defines the Circuit class, which represents a
-quantum circuit composed of quantum gates.
+quantum circuit composed of quantum gates and measurements.
 '''
 
 from . import gates
@@ -22,7 +22,7 @@ class Circuit:
 
 
     def __repr__(self):
-        return f"Circuit(num_qubits={self.num_qubits}, num_gates={len(self)})"
+        return f"Circuit(num_qubits={self.num_qubits}, num_operations={len(self)})"
 
 
     def add_gate(self, operator, target_qubits):

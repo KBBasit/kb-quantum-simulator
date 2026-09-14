@@ -27,19 +27,19 @@ def test_statevector_simulator_run():
     circuit_1 = circuits.Circuit(num_qubits=2)
     circuit_1.hadamard(0)
     circuit_1.cnot(0, 1)
-    final_state_1 = sim.run(circuit_1)
+    final_state_1, _ = sim.run(circuit_1)
     expected_state_1 = 1/np.sqrt(2) * np.array([1, 0, 0, 1])
     assert np.allclose(final_state_1.amplitudes, expected_state_1)
 
     circuit_2 = circuits.Circuit(num_qubits=2)
     circuit_2.pauli_x(0)
     initial_state_2 = states.StateVector(np.array([0, 0, 1, 0]))
-    final_state_2 = sim.run(circuit_2, initial_state=initial_state_2)
+    final_state_2, _ = sim.run(circuit_2, initial_state=initial_state_2)
     expected_state_2 = np.array([1, 0, 0, 0])
     assert np.allclose(final_state_2.amplitudes, expected_state_2)
 
     circuit_3 = circuits.Circuit(num_qubits=3)
-    final_state_3 = sim.run(circuit_3)
+    final_state_3, _ = sim.run(circuit_3)
     expected_state_3 = np.array([1, 0, 0, 0, 0, 0, 0, 0])
     assert np.allclose(final_state_3.amplitudes, expected_state_3)
 

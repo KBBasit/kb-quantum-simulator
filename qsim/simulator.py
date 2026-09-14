@@ -1,5 +1,6 @@
 from .states import StateVector
 from .circuits import Circuit
+from .measurements import measure
 
 
 
@@ -18,7 +19,15 @@ class StatevectorSimulator:
             raise ValueError("Initial state must have the same number of qubits as the circuit.")
 
         state = initial_state.copy()
-        for operator, target_qubits in circuit.operations:
-            operator.apply_gate(state, target_qubits, inplace=True)
+        measurement_results = {}
 
-        return state
+        for operation in circuit.operations:
+            operation_type = operation[0]
+            if operation_type == "measure":
+                _, qubits, key = operation
+                measurement_results[key] = measure(state, qubits)
+            else:
+                _, operator, target_qubits = operation
+                operator.apply_gate(state, target_qubits, inplace=True)
+
+        return state, measurement_results

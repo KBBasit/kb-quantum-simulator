@@ -44,11 +44,8 @@ def test_add_gate_validations():
 def test_add_measurement_validations():
     circuit = circuits.Circuit(num_qubits=3)
 
-    with pytest.raises(TypeError, match="Qubits must be a tuple of indices or None."):
-        circuit.add_measurement(key="alice", qubits=[0])
-
     with pytest.raises(TypeError, match="Target qubits must be a tuple or None."):
-        circuit.add_measurement(key="alice", qubits=0)
+        circuit.add_measurement(key="alice", qubits=[0])
 
     with pytest.raises(TypeError, match="All target qubit indices must be integers."):
         circuit.add_measurement(key="alice", qubits=(0, '1'))
@@ -77,6 +74,7 @@ def test_pauli_x_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.pauli_x())
     assert target_qubits == (0,)
 
@@ -87,6 +85,7 @@ def test_pauli_y_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.pauli_y())
     assert target_qubits == (1,)
 
@@ -96,7 +95,8 @@ def test_pauli_z_gate_addition():
     circuit.pauli_z(target_qubit=0)
 
     operation_type, operator, target_qubits = circuit.operations[0]
-
+    
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.pauli_z())
     assert target_qubits == (0,)
 
@@ -107,6 +107,7 @@ def test_hadamard_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.hadamard())
     assert target_qubits == (1,)
 
@@ -117,6 +118,7 @@ def test_s_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.s_gate())
     assert target_qubits == (0,)
 
@@ -127,6 +129,7 @@ def test_t_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.t_gate())
     assert target_qubits == (1,)
 
@@ -137,6 +140,7 @@ def test_cnot_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.cnot())
     assert target_qubits == (0, 1)
 
@@ -147,6 +151,7 @@ def test_controlled_z_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.controlled_z())
     assert target_qubits == (0, 1)
 
@@ -157,6 +162,7 @@ def test_swap_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.swap())
     assert target_qubits == (0, 1)
 
@@ -168,6 +174,7 @@ def test_r_x_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.r_x(theta))
     assert target_qubits == (0,)
 
@@ -179,6 +186,7 @@ def test_r_y_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.r_y(theta))
     assert target_qubits == (1,)
 
@@ -190,6 +198,7 @@ def test_r_z_gate_addition():
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.r_z(theta))
     assert target_qubits == (0,)
 
@@ -197,10 +206,11 @@ def test_r_z_gate_addition():
 def test_phase_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     theta = np.pi / 4
-    circuit.phase_gate(target_qubits=(1,), theta=theta)
+    circuit.phase_gate(target_qubit=1, theta=theta)
 
     operation_type, operator, target_qubits = circuit.operations[0]
 
+    assert operation_type == "gate"
     assert np.allclose(operator.matrix, gates.phase_gate(theta))
     assert target_qubits == (1,)
 

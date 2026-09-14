@@ -43,8 +43,6 @@ class Circuit:
 
 
     def add_measurement(self, key, qubits=None):
-        if not isinstance(qubits, (tuple, type(None))):
-            raise TypeError("Qubits must be a tuple of indices or None.")
         if qubits is not None:
             if not isinstance(qubits, tuple):
                 raise TypeError("Target qubits must be a tuple or None.")

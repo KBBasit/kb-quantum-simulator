@@ -45,7 +45,7 @@ def test_pauli_x_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.pauli_x(target_qubit=0)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.pauli_x())
     assert target_qubits == (0,)
@@ -55,7 +55,7 @@ def test_pauli_y_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.pauli_y(target_qubit=1)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.pauli_y())
     assert target_qubits == (1,)
@@ -65,7 +65,7 @@ def test_pauli_z_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.pauli_z(target_qubit=0)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.pauli_z())
     assert target_qubits == (0,)
@@ -75,7 +75,7 @@ def test_hadamard_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.hadamard(target_qubit=1)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.hadamard())
     assert target_qubits == (1,)
@@ -85,7 +85,7 @@ def test_s_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.s_gate(target_qubit=0)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.s_gate())
     assert target_qubits == (0,)
@@ -95,7 +95,7 @@ def test_t_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.t_gate(target_qubit=1)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.t_gate())
     assert target_qubits == (1,)
@@ -105,7 +105,7 @@ def test_cnot_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.cnot(control_qubit=0, target_qubit=1)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.cnot())
     assert target_qubits == (0, 1)
@@ -115,7 +115,7 @@ def test_controlled_z_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.controlled_z(control_qubit=0, target_qubit=1)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.controlled_z())
     assert target_qubits == (0, 1)
@@ -125,7 +125,7 @@ def test_swap_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.add_gate(circuits.Operator(gates.swap()), target_qubits=(0, 1))
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.swap())
     assert target_qubits == (0, 1)
@@ -136,7 +136,7 @@ def test_r_x_gate_addition():
     theta = np.pi / 4
     circuit.r_x(target_qubit=0, theta=theta)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.r_x(theta))
     assert target_qubits == (0,)
@@ -147,7 +147,7 @@ def test_r_y_gate_addition():
     theta = np.pi / 4
     circuit.r_y(target_qubit=1, theta=theta)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.r_y(theta))
     assert target_qubits == (1,)
@@ -158,7 +158,7 @@ def test_r_z_gate_addition():
     theta = np.pi / 4
     circuit.r_z(target_qubit=0, theta=theta)
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.r_z(theta))
     assert target_qubits == (0,)
@@ -169,7 +169,7 @@ def test_phase_gate_addition():
     theta = np.pi / 4
     circuit.add_gate(circuits.Operator(gates.phase_gate(theta)), target_qubits=(1,))
 
-    operator, target_qubits = circuit.gates[0]
+    operator, target_qubits = circuit.operations[0]
 
     assert np.allclose(operator.matrix, gates.phase_gate(theta))
     assert target_qubits == (1,)

@@ -18,7 +18,7 @@ class StatevectorSimulator:
             raise ValueError("Initial state must have the same number of qubits as the circuit.")
 
         state = initial_state.copy()
-        for operator, target_qubits in circuit.gates:
+        for operator, target_qubits in circuit.operations:
             operator.apply_gate(state, target_qubits, inplace=True)
 
         return state

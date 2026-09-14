@@ -14,11 +14,11 @@ class Circuit:
             raise ValueError("Number of qubits must be a positive integer.")
 
         self.num_qubits = num_qubits
-        self.gates = []
+        self.operations = []
 
 
     def __len__(self):
-        return len(self.gates)
+        return len(self.operations)
 
 
     def __repr__(self):
@@ -39,7 +39,23 @@ class Circuit:
         if any(q < 0 or q >= self.num_qubits for q in target_qubits):
             raise ValueError("Target qubits must be within the range of the circuit's qubits.")
 
-        self.gates.append((operator, target_qubits))
+        self.operations.append(("gate", operator, target_qubits))
+
+
+    def add_measurement(self, key, qubits=None):
+        if not isinstance(qubits, (tuple, type(None))):
+            raise TypeError("Qubits must be a tuple of indices or None.")
+        if qubits is not None:
+            if not isinstance(qubits, tuple):
+                raise TypeError("Target qubits must be a tuple or None.")
+            if not all(isinstance(q, int) for q in qubits):
+                raise TypeError("All target qubit indices must be integers.")
+            if len(set(qubits)) != len(qubits):
+                raise ValueError("Target qubit indices must be unique.")
+            if any(q < 0 or q >= self.num_qubits for q in qubits):
+                raise ValueError("Target qubit indices must be within the range of the circuit's qubits.")
+
+        self.operations.append(("measure", qubits, key))
 
 
     def pauli_x(self, target_qubit):

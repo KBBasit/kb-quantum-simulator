@@ -60,6 +60,17 @@ def test_add_measurement_validations():
         circuit.add_measurement(key="alice", qubits=(0, 3))
 
 
+def test_add_measurement():
+    circuit = circuits.Circuit(num_qubits=2)
+    circuit.add_measurement(key="alice", qubits=(0,))
+
+    operation_type, qubits, key = circuit.operations[0]
+
+    assert operation_type == "measure"
+    assert qubits == (0,)
+    assert key == "alice"
+
+
 def test_pauli_x_gate_addition():
     circuit = circuits.Circuit(num_qubits=2)
     circuit.pauli_x(target_qubit=0)

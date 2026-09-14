@@ -49,3 +49,29 @@ def test_statevector_simulator_run():
     initial_state_4_amplitudes = initial_state_4.amplitudes.copy()
     sim.run(circuit_4, initial_state=initial_state_4)
     assert np.allclose(initial_state_4.amplitudes, initial_state_4_amplitudes)
+
+    circuit_5 = circuits.Circuit(num_qubits=2)
+    circuit_5.pauli_x(0)
+    circuit_5.add_measurement(key="alice", qubits=(1,))
+    _, measurement_results_5 = sim.run(circuit_5)
+    assert "alice" in measurement_results_5
+    assert measurement_results_5["alice"] in ["0", "1"]
+
+    circuit_6 = circuits.Circuit(num_qubits=1)
+    circuit_6.hadamard(0)
+    circuit_6.add_measurement(key="alice", qubits=(0,))
+    final_state_6, measurement_results_6 = sim.run(circuit_6)
+    if measurement_results_6["alice"] == "0":
+        assert np.allclose(final_state_6.amplitudes, np.array([1, 0]))
+    else:
+        assert np.allclose(final_state_6.amplitudes, np.array([0, 1]))
+
+    circuit_7 = circuits.Circuit(num_qubits=1)
+    circuit_7.pauli_x(0)
+    circuit_7.add_measurement(key="alice", qubits=(0,))
+    circuit_7.pauli_x(0)
+    final_state_7, measurement_results_7 = sim.run(circuit_7)
+    if measurement_results_7["alice"] == "0":
+        assert np.allclose(final_state_7.amplitudes, np.array([0, 1]))
+    else:
+        assert np.allclose(final_state_7.amplitudes, np.array([1, 0]))

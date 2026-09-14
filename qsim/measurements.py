@@ -26,12 +26,13 @@ def _validate_state_type_and_qubit_inputs(state_vector, qubits):
         raise TypeError("Input must be a StateVector object.")
     if not isinstance(qubits, (tuple, type(None))):
         raise TypeError("Qubits must be a tuple of indices or None.")
-    if qubits is not None and not all(isinstance(q, int) for q in qubits):
-        raise TypeError("All qubit indices must be integers.")
-    if qubits is not None and any(q < 0 or q >= state_vector.num_qubits for q in qubits):
-        raise ValueError("Qubit indices must be within the range of the state vector's qubits.")
-    if qubits is not None and len(set(qubits)) != len(qubits):
-        raise ValueError("Qubit indices must be unique.")
+    if qubits is not None:
+        if not all(isinstance(q, int) for q in qubits):
+            raise TypeError("All qubit indices must be integers.")
+        if any(q < 0 or q >= state_vector.num_qubits for q in qubits):
+            raise ValueError("Qubit indices must be within the range of the state vector's qubits.")
+        if len(set(qubits)) != len(qubits):
+            raise ValueError("Qubit indices must be unique.")
 
 
 def measure(state_vector, qubits=None):

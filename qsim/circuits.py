@@ -88,6 +88,8 @@ class Circuit:
             raise ValueError("At least one measured qubit is required.")
         if len(set(measured_qubits)) != len(measured_qubits) or len(set(target_qubits)) != len(target_qubits):
             raise ValueError("Qubit indices must be unique.")
+        if any(q < 0 or q >= self.num_qubits for q in measured_qubits + target_qubits):
+            raise ValueError("Qubit indices must be within the range of the circuit's qubits.")
         if not isinstance(measurement_condition, str):
             raise TypeError("Measurement condition must be a string.")
         if not all(c in "01" for c in measurement_condition):

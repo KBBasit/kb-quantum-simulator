@@ -67,58 +67,67 @@ def test_add_measurement_validations():
 def test_c_apply_validations():
     circuit = circuits.Circuit(num_qubits=3)
     operator = circuits.Operator(gates.cnot())
+    circuit.add_measurement(key="alice", qubits=(0,1))
+    circuit.add_measurement(key="Eve", qubits=None)
 
     with pytest.raises(TypeError, match="Operator must be an instance of the Operator class."):
-        circuit.c_apply("not_an_operator", measured_qubits=(0,), measurement_condition="0", target_qubits=(1,))
+        circuit.c_apply("not_an_operator", measurement_key="alice", measurement_condition="00", target_qubits=(1,))
 
-    with pytest.raises(TypeError, match="Measured qubits and target qubits must be tuples."):
-        circuit.c_apply(operator, measured_qubits=[0], measurement_condition="0", target_qubits=(0,1))
-    with pytest.raises(TypeError, match="Measured qubits and target qubits must be tuples."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="0", target_qubits=[0,1])
+    with pytest.raises(TypeError, match="Target qubits must be a tuple of integers."):
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="00", target_qubits=[0,1])
 
-    with pytest.raises(TypeError, match="All qubit indices must be integers."):
-        circuit.c_apply(operator, measured_qubits=(0, '1'), measurement_condition="01", target_qubits=(0,1))
-    with pytest.raises(TypeError, match="All qubit indices must be integers."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="0", target_qubits=(0,'1'))
+    with pytest.raises(TypeError, match="All target qubit indices must be integers."):
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="01", target_qubits=(0,'1'))
 
     with pytest.raises(ValueError, match="Number of target qubits must match the operator's qubit count."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="0", target_qubits=(0,1,2))
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="00", target_qubits=(0,))
 
-    with pytest.raises(ValueError, match="At least one measured qubit is required."):
-        circuit.c_apply(operator, measured_qubits=(), measurement_condition="", target_qubits=(0,1))
+    with pytest.raises(ValueError, match="Target qubit indices must be unique."):
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="00", target_qubits=(0,0))
 
-    with pytest.raises(ValueError, match="Qubit indices must be unique."):
-        circuit.c_apply(operator, measured_qubits=(0, 0), measurement_condition="00", target_qubits=(0,1))
-    with pytest.raises(ValueError, match="Qubit indices must be unique."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="0", target_qubits=(0,0))
-    
-    with pytest.raises(ValueError, match="Qubit indices must be within the range of the circuit's qubits."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="0", target_qubits=(0,3))
-    with pytest.raises(ValueError, match="Qubit indices must be within the range of the circuit's qubits."):
-        circuit.c_apply(operator, measured_qubits=(0,3), measurement_condition="01", target_qubits=(0,1))
+    with pytest.raises(ValueError, match="Target qubit indices must be within the range of the circuit's qubits."):
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="00", target_qubits=(0,3))
 
     with pytest.raises(TypeError, match="Measurement condition must be a string."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition=0, target_qubits=(0,1))
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition=00, target_qubits=(0,1))
 
     with pytest.raises(ValueError, match="Measurement condition must be a valid bitstring."):
-        circuit.c_apply(operator, measured_qubits=(0,), measurement_condition="2", target_qubits=(0,1))
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="20", target_qubits=(0,1))
 
-    with pytest.raises(ValueError, match="Measurement condition must have the same length as the number of measured qubits."):
-        circuit.c_apply(operator, measured_qubits=(0,1), measurement_condition="0", target_qubits=(0,1))
+    with pytest.raises(ValueError, match="Length of measurement condition must match the number of measured qubits."):
+        circuit.c_apply(operator, measurement_key="alice", measurement_condition="0", target_qubits=(0,1))
+
+    with pytest.raises(ValueError, match="Measurement key 'bob' does not exist in the circuit."):
+        circuit.c_apply(operator, measurement_key="bob", measurement_condition="00", target_qubits=(0,1))
+
+    with pytest.raises(TypeError, match="Measurement key must be a string."):
+        circuit.c_apply(operator, measurement_key=123, measurement_condition="00", target_qubits=(0,1))
+
+    with pytest.raises(ValueError, match="Length of measurement condition must match the number of measured qubits."):
+        circuit.c_apply(operator, measurement_key="Eve", measurement_condition="0", target_qubits=(0,1))
 
 
 def test_c_apply():
     circuit = circuits.Circuit(num_qubits=3)
     circuit.hadamard(target_qubit=0)
     circuit.add_measurement(key="alice", qubits=(0,))
-    circuit.c_apply(operator=circuits.Operator(gates.cnot()), measured_qubits=(0,), measurement_condition="1", target_qubits=(1,2))
+    circuit.add_measurement(key="eve", qubits=None)
+    circuit.c_apply(operator=circuits.Operator(gates.cnot()), measurement_key="alice", measurement_condition="1", target_qubits=(1,2))
+    circuit.c_apply(operator=circuits.Operator(gates.cnot()), measurement_key="eve", measurement_condition="000", target_qubits=(1,2))
 
-    operation_type, operator, measured_qubits, measurement_condition, target_qubits = circuit.operations[2]
-    assert operation_type == "c_apply"
-    assert np.allclose(operator.matrix, gates.cnot())
-    assert measured_qubits == (0,)
-    assert measurement_condition == "1"
-    assert target_qubits == (1,2)
+    operation_type_1, operator_1, measurement_key_1, measurement_condition_1, target_qubits_1 = circuit.operations[3]
+    assert operation_type_1 == "c_apply"
+    assert np.allclose(operator_1.matrix, gates.cnot())
+    assert measurement_key_1 == "alice"
+    assert measurement_condition_1 == "1"
+    assert target_qubits_1 == (1,2)
+
+    operation_type_2, operator_2, measurement_key_2, measurement_condition_2, target_qubits_2 = circuit.operations[4]
+    assert operation_type_2 == "c_apply"
+    assert np.allclose(operator_2.matrix, gates.cnot())
+    assert measurement_key_2 == "eve"
+    assert measurement_condition_2 == "000"
+    assert target_qubits_2 == (1,2)
 
 
 def test_add_measurement():

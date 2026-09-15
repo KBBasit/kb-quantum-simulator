@@ -91,9 +91,9 @@ class Circuit:
         if len(target_qubits) != operator.operator_qubits:
             raise ValueError("Number of target qubits must match the operator's qubit count.")
         if len(set(target_qubits)) != len(target_qubits):
-            raise ValueError("Qubit indices must be unique.")
+            raise ValueError("Target qubit indices must be unique.")
         if any(q < 0 or q >= self.num_qubits for q in target_qubits):
-            raise ValueError("Qubit indices must be within the range of the circuit's qubits.")
+            raise ValueError("Target qubit indices must be within the range of the circuit's qubits.")
         if not isinstance(measurement_condition, str):
             raise TypeError("Measurement condition must be a string.")
         if not all(c in "01" for c in measurement_condition):

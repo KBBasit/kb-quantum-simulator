@@ -52,6 +52,10 @@ class Circuit:
                 raise ValueError("Target qubit indices must be unique.")
             if any(q < 0 or q >= self.num_qubits for q in qubits):
                 raise ValueError("Target qubit indices must be within the range of the circuit's qubits.")
+        if not isinstance(key, str):
+            raise TypeError("Measurement key must be a string.")
+        if any(op[0] == "measure" and op[2] == key for op in self.operations):
+            raise ValueError(f"Measurement key '{key}' already exists in the circuit.")
 
         self.operations.append(("measure", qubits, key))
 

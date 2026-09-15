@@ -56,6 +56,13 @@ def test_add_measurement_validations():
     with pytest.raises(ValueError, match="Target qubit indices must be within the range of the circuit's qubits."):
         circuit.add_measurement(key="alice", qubits=(0, 3))
 
+    with pytest.raises(TypeError, match="Measurement key must be a string."):
+        circuit.add_measurement(key=123, qubits=(0,))
+
+    circuit.add_measurement(key="alice", qubits=(0,))
+    with pytest.raises(ValueError, match="Measurement key 'alice' already exists in the circuit."):
+        circuit.add_measurement(key="alice", qubits=(1,))
+
 
 def test_c_apply_validations():
     circuit = circuits.Circuit(num_qubits=3)

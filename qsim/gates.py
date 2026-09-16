@@ -150,4 +150,16 @@ def phase_gate(theta):
     '''
     return np.array([
         [1, 0],
-        [0, np.exp(1j * theta)]], dtype=np.complex128)        
+        [0, np.exp(1j * theta)]], dtype=np.complex128)
+
+
+def controlled_phase(theta):
+    '''
+    Return the 4x4 controlled phase gate that applies a
+    phase shift of theta to the |11> state.
+    '''
+    return np.array([
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, np.exp(1j * theta)]], dtype=np.complex128)

@@ -168,3 +168,19 @@ def test_swap_action():
     assert np.allclose(swap @ ket_01, ket_10)
     assert np.allclose(swap @ ket_10, ket_01)
     assert np.allclose(swap @ ket_11, ket_11)
+
+
+def test_controlled_phase_gate_action():
+    theta = np.pi / 3
+    controlled_phase = gates.controlled_phase(theta)
+
+    ket_00 = np.array([1, 0, 0, 0], dtype=np.complex128)
+    ket_01 = np.array([0, 1, 0, 0], dtype=np.complex128)
+    ket_10 = np.array([0, 0, 1, 0], dtype=np.complex128)
+    ket_11 = np.array([0, 0, 0, 1], dtype=np.complex128)
+
+    assert _is_unitary(controlled_phase)
+    assert np.allclose(controlled_phase @ ket_00, ket_00)
+    assert np.allclose(controlled_phase @ ket_01, ket_01)
+    assert np.allclose(controlled_phase @ ket_10, ket_10)
+    assert np.allclose(controlled_phase @ ket_11, np.exp(1j * theta) * ket_11)

@@ -24,10 +24,9 @@ def random_single_qubit_state():
     return state
 
 
-
 def teleportation(state_vector):
     '''
-    Simulates the quantum teleportation method
+    Simulates the quantum teleportation protocol
 
     Parameters:
         state_vector (StateVector): The state vector to be teleported.
@@ -36,7 +35,7 @@ def teleportation(state_vector):
     '''
     circuit = Circuit(num_qubits=3)
     initial_state_arr = np.kron(state_vector.amplitudes, np.array([1, 0, 0, 0]))
-    inital_state = StateVector(initial_state_arr)
+    initial_state = StateVector(initial_state_arr)
 
     circuit.hadamard(1)
     circuit.cnot(1, 2)
@@ -54,7 +53,7 @@ def teleportation(state_vector):
     circuit.c_apply(operator=Operator(pauli_z()), measurement_key = "alice", measurement_condition="11", target_qubits=(2,))
 
     sim = StatevectorSimulator()
-    final_state, measurement_result = sim.run(circuit, initial_state=inital_state)
+    final_state, measurement_result = sim.run(circuit, initial_state=initial_state)
 
     return final_state, measurement_result
 

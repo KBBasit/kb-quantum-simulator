@@ -165,3 +165,7 @@ class Circuit:
     
     def phase_gate(self, target_qubit, theta):
         self.add_gate(Operator(gates.phase_gate(theta)), (target_qubit,))
+
+
+    def controlled_phase(self, control_qubit, target_qubit, theta):
+        self.add_gate(Operator(gates.controlled_phase(theta)), (control_qubit, target_qubit))

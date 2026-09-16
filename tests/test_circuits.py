@@ -288,6 +288,18 @@ def test_phase_gate_addition():
     assert target_qubits == (1,)
 
 
+def test_controlled_phase_gate_addition():
+    circuit = circuits.Circuit(num_qubits=2)
+    theta = np.pi / 4
+    circuit.controlled_phase(control_qubit=0, target_qubit=1, theta=theta)
+
+    operation_type, operator, target_qubits = circuit.operations[0]
+
+    assert operation_type == "gate"
+    assert np.allclose(operator.matrix, gates.controlled_phase(theta))
+    assert target_qubits == (0, 1)
+
+
 def test_length_of_circuit():
     circuit = circuits.Circuit(num_qubits=2)
     assert len(circuit) == 0

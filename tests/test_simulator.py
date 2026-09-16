@@ -76,6 +76,16 @@ def test_statevector_simulator_run():
     else:
         assert np.allclose(final_state_7.amplitudes, np.array([1, 0]))
 
+    circuit_8 = circuits.Circuit(num_qubits=2)
+    circuit_8.hadamard(0)
+    circuit_8.add_measurement(key="alice", qubits=(0,))
+    circuit_8.c_apply(operator=circuits.Operator(circuits.gates.pauli_x()), measurement_key="alice", measurement_condition="1", target_qubits=(1,))
+    final_state_8, measurement_results_8 = sim.run(circuit_8)
+    if measurement_results_8["alice"] == "1":
+        assert np.allclose(final_state_8.amplitudes, np.array([0, 0, 0, 1]))
+    else:
+        assert np.allclose(final_state_8.amplitudes, np.array([1, 0, 0, 0]))
+
 
 def test_unknown_operation_type():
     circuit = circuits.Circuit(num_qubits=1)

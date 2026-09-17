@@ -169,3 +169,29 @@ class Circuit:
 
     def controlled_phase(self, control_qubit, target_qubit, theta):
         self.add_gate(Operator(gates.controlled_phase(theta)), (control_qubit, target_qubit))
+
+
+    def _validate_target_qubits(self, qubit_indices):
+        if not isinstance(qubit_indices, tuple):
+            raise TypeError("Target qubits must be a tuple.")
+        if not all(isinstance(q, int) for q in qubit_indices):
+            raise TypeError("All qubit indices must be integers.")
+        if len(set(qubit_indices)) != len(qubit_indices):
+            raise ValueError("Qubit indices must be unique.")
+        if any(q < 0 or q >= self.num_qubits for q in qubit_indices):
+            raise ValueError("Qubit indices must be within the range of the circuit's qubits.")
+
+
+    def quantum_fourier_transform(self, target_qubits):
+        self._validate_target_qubits(target_qubits)
+
+        self.operations.append(("qft", target_qubits))
+
+
+    def inverse_quantum_fourier_transform(self, target_qubits):
+        self._validate_target_qubits(target_qubits)
+
+        self.operations.append(("inverse_qft", target_qubits))
+    
+
+

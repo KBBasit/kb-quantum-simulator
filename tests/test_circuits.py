@@ -318,3 +318,32 @@ def test_representation_of_circuit():
 
     expected_repr = "Circuit(num_qubits=2, num_operations=2)"
     assert repr(circuit) == expected_repr
+
+
+def test_qft_and_inverse_qft_validations():
+    circuit = circuits.Circuit(num_qubits=3)
+
+    with pytest.raises(TypeError, match="Target qubits must be a tuple."):
+        circuit.quantum_fourier_transform(target_qubits=[0, 1, 2])
+        circuit.inverse_quantum_fourier_transform(target_qubits=[0, 1, 2])
+
+    with pytest.raises(TypeError, match="All qubit indices must be integers."):
+        circuit.quantum_fourier_transform(target_qubits=(0, '1', 2))
+        circuit.inverse_quantum_fourier_transform(target_qubits=(0, '1', 2))
+
+    with pytest.raises(ValueError, match="Qubit indices must be unique."):
+        circuit.quantum_fourier_transform(target_qubits=(0, 1, 1))
+        circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 1))
+
+    with pytest.raises(ValueError, match="Qubit indices must be within the range of the circuit's qubits."):
+        circuit.quantum_fourier_transform(target_qubits=(0, 1, 3))
+        circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 3))
+
+
+def test_qft_and_inverse_qft_addition():
+    circuit = circuits.Circuit(num_qubits=3)
+    circuit.quantum_fourier_transform(target_qubits=(0, 1, 2))
+    circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 2))
+
+    assert circuit.operations[0] == ("qft", (0, 1, 2))
+    assert circuit.operations[1] == ("inverse_qft", (0, 1, 2))

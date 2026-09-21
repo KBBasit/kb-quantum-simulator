@@ -1,4 +1,5 @@
 from qsim import states
+from qsim import states
 from qsim import circuits
 from qsim import simulator
 import numpy as np
@@ -85,6 +86,36 @@ def test_statevector_simulator_run():
         assert np.allclose(final_state_8.amplitudes, np.array([0, 0, 0, 1]))
     else:
         assert np.allclose(final_state_8.amplitudes, np.array([1, 0, 0, 0]))
+
+
+def test_qft():
+    sim = simulator.StatevectorSimulator()
+
+    circuit_1 = circuits.Circuit(num_qubits=2)
+    circuit_1.quantum_fourier_transform(target_qubits=(0,1))
+    final_state_1, _ = sim.run(circuit_1)
+    assert np.allclose(final_state_1.amplitudes, 1/2 * np.array([1,1,1,1]))
+
+    circuit_2 = circuits.Circuit(num_qubits=4)
+    circuit_2.quantum_fourier_transform(target_qubits=(0,3,2))
+    final_state_2, _ = sim.run(circuit_2, initial_state=states.StateVector([0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    expected_state_2 = 1/np.sqrt(8) * np.array([1,-1,1j,-1j,0,0,0,0,1,-1,1j,-1j,0,0,0,0])
+    assert np.allclose(final_state_2.amplitudes, expected_state_2)
+
+
+def test_inverse_qft():
+    sim = simulator.StatevectorSimulator()
+
+    circuit_1 = circuits.Circuit(num_qubits=2)
+    circuit_1.inverse_quantum_fourier_transform(target_qubits=(0,1))
+    final_state_1, _ = sim.run(circuit_1, initial_state=states.StateVector([1/2] * 4))
+    assert np.allclose(final_state_1.amplitudes, np.array([1,0,0,0]))
+
+    circuit_2 = circuits.Circuit(num_qubits=4)
+    circuit_2.quantum_fourier_transform(target_qubits=(0,3,2))
+    circuit_2.inverse_quantum_fourier_transform(target_qubits=(0,3,2))
+    final_state_2, _ = sim.run(circuit_2, initial_state=states.StateVector([0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    assert np.allclose(final_state_2.amplitudes, np.array([0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
 
 
 def test_unknown_operation_type():

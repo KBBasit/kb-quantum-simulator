@@ -38,6 +38,9 @@ def test_operator_application_validations():
     with pytest.raises(ValueError, match="Operator must be unitary."):
         non_unitary_operator.apply_gate(state_vector, target_qubits=(0, 1), inplace=False)
 
+    with pytest.raises(TypeError, match="Target qubits must be a tuple."):
+        cnot_operator.apply_gate(state_vector, target_qubits=[0, 1], inplace=False)
+
     with pytest.raises(TypeError, match="Target qubits must be integers."):
         cnot_operator.apply_gate(state_vector, target_qubits=('0', '1'), inplace=False)
 

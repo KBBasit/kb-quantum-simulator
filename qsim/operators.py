@@ -55,6 +55,8 @@ class Operator:
             raise TypeError("State vector must be a StateVector object.")
         if not self.is_unitary:
             raise ValueError("Operator must be unitary.")
+        if not isinstance(target_qubits, tuple):
+            raise TypeError("Target qubits must be a tuple.")
         if not all(isinstance(q, int) for q in target_qubits):
             raise TypeError("Target qubits must be integers.")
         if len(target_qubits) != self.operator_qubits:

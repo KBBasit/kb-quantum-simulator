@@ -65,6 +65,8 @@ def deutsch_jozsa_algorithm(n, function):
     Returns:
         str: The result of the Deutsch-Jozsa algorithm ('constant' or 'balanced').
     '''
+    sim = StatevectorSimulator()
+
     circuit = Circuit(num_qubits=n + 1)
     oracle = make_oracle(n, function)
     ancilla = n
@@ -80,12 +82,13 @@ def deutsch_jozsa_algorithm(n, function):
     for qubit in range(n):
         circuit.hadamard(qubit)
 
-    sim = StatevectorSimulator()
-    final_state = sim.run(circuit)
+    circuit.add_measurement(key="Measurement", qubits=tuple(range(n)))
 
-    measurement = measure(final_state)
+    _, measurement = sim.run(circuit)
 
-    if measurement[:-1] == '0' * n:
+    measurement_result = measurement["Measurement"]
+
+    if measurement_result == '0' * n:
         return 'constant'
     else:
         return 'balanced'
@@ -93,13 +96,22 @@ def deutsch_jozsa_algorithm(n, function):
 
 
 if __name__ == "__main__":
-    n = 10
+    all_passed = True
+    for n in range(1, 7):
+        constant_f = make_f(n, 'constant')
+        balanced_f = make_f(n, 'balanced')
 
-    constant_f = make_f(n, 'constant')
-    balanced_f = make_f(n, 'balanced')
+        constant_result = deutsch_jozsa_algorithm(n, constant_f)
+        balanced_result = deutsch_jozsa_algorithm(n, balanced_f)
 
-    constant_result = deutsch_jozsa_algorithm(n, constant_f)
-    balanced_result = deutsch_jozsa_algorithm(n, balanced_f)
+        print(f"Constant function result (number of input bits = {n}): {constant_result}")
+        print(f"Balanced function result (number of input bits = {n}): {balanced_result}")
 
-    print(f"Result for constant function: {constant_result}")
-    print(f"Result for balanced function: {balanced_result}")
+        if constant_result != 'constant' or balanced_result != 'balanced':
+            all_passed = False
+            break
+
+    if all_passed:
+        print("Deutsch-Jozsa algorithm successful!")
+    else:
+        print("Deutsch-Jozsa algorithm failed ")            

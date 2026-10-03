@@ -5,7 +5,6 @@ Deutsch-Jozsa Algorithm
 from qsim.operators import Operator
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-from qsim.measurements import measure
 import numpy as np
 
 

@@ -96,7 +96,7 @@ def shors_factoring_algorithm(N, max_attempts=10):
         a = np.random.randint(2, N)
         greatest_common_divisor = np.gcd(a, N)
         if greatest_common_divisor != 1:
-            print("Factors found through classical GCD")
+            print(f"Factors of {N} found through classical GCD")
             return int(greatest_common_divisor), N // int(greatest_common_divisor)
 
         # Initialisation
@@ -152,12 +152,14 @@ def shors_factoring_algorithm(N, max_attempts=10):
 
 
 if __name__ == "__main__":
-    N = 91
+    N_values = [15, 21, 33, 35, 91]
 
-    result = shors_factoring_algorithm(N, max_attempts=3)
+    for N in N_values:
+        print(f"Factoring {N}...")
+        result = shors_factoring_algorithm(N, max_attempts=10)
 
-    if result is None:
-        print("Factorisation unsuccessful")
-    else:
-        factor_1, factor_2 = result
-        print(f"Factors of {N} are: {factor_1} and {factor_2}")
+        if result is None:
+            print(f"Factorisation of {N} unsuccessful")
+        else:
+            factor_1, factor_2 = result
+            print(f"Factorisation of {N} successful! Factors of {N} are: {factor_1} and {factor_2}")

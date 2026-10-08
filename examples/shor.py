@@ -48,64 +48,116 @@ def continued_fractions_algorithm(numerator, denominator):
         numerator (int): The numerator of the fraction.
         denominator (int): The denominator of the fraction.
     Returns:
-        tuple: A tuple containing the best rational approximation (p, q) such that p/q
+        list: A list of integers representing the continued fraction.
     """
     fractions = []
     while denominator:
         fractions.append(numerator // denominator)
         numerator, denominator = denominator, numerator % denominator
+
     return fractions
 
 
-def shors_factoring_algorithm(N):
+def find_convergents(fractions):
     """
-    Implements Shor's factoring algorithm to find a non-trivial factor of a composite number N.
+    Finds the convergents of a continued fraction.
+    Parameters:
+        fractions (list): A list of integers representing the continued fraction.
+    Returns:
+        list: A list of tuples representing the convergents (p, q).
+    """
+    convergents = []
+    p0, p1 = 1, fractions[0]
+    q0, q1 = 0, 1
+    convergents.append((p1, q1))
+    for i in range(1, len(fractions)):
+        p2 = fractions[i] * p1 + p0
+        q2 = fractions[i] * q1 + q0
+        convergents.append((p2, q2))
+        p0, p1 = p1, p2
+        q0, q1 = q1, q2
+
+    return convergents
+
+
+def shors_factoring_algorithm(N, max_attempts=10):
+    """
+    Implements Shor's factoring algorithm to find non-trivial factors of a composite number N.
     Parameters:
         N (int): The composite number to be factored.
+        max_attempts (int): The maximum number of attempts to find the factors. Default is 10.
     Returns:
-        int: A non-trivial factor of N
+        tuple: A tuple containing two non-trivial factors of N, or None if no factors are found.
     """
     sim = StatevectorSimulator()
 
-    # Choose a random integer a such that 1 < a < N and gcd(a, N) = 1
-    a = np.random.randint(2, N)
-    gcd = np.gcd(a, N)
-    if gcd != 1:
-        return gcd
+    for _ in range(max_attempts):
+        # Choose a random integer a such that 1 < a < N and gcd(a, N) = 1
+        a = np.random.randint(2, N)
+        greatest_common_divisor = np.gcd(a, N)
+        if greatest_common_divisor != 1:
+            print("Factors found through classical GCD")
+            return int(greatest_common_divisor), N // int(greatest_common_divisor)
 
-    # Initialisation
-    n = (N ** 2 - 1).bit_length()
-    m = (N - 1).bit_length()
-    second_register_qubits = tuple(range(n, n + m))
-    circuit = Circuit(num_qubits=n + m)
-    circuit.pauli_x(n + m - 1)
+        # Initialisation
+        n = (N ** 2 - 1).bit_length()
+        m = (N - 1).bit_length()
+        second_register_qubits = tuple(range(n, n + m))
+        circuit = Circuit(num_qubits=n + m)
+        circuit.pauli_x(n + m - 1)
 
-    # Create superposition
-    for qubit in range(n):
-        circuit.hadamard(qubit)
+        # Create superposition
+        for qubit in range(n):
+            circuit.hadamard(qubit)
 
-    # Apply modular exponentiation oracle
-    oracle_operations = make_modular_exponentiation_oracle(a, N, m, n)
-    for i, operation in enumerate(oracle_operations):
-        control_qubit = n - 1 - i
-        circuit.add_gate(operation, target_qubits= (control_qubit,) + second_register_qubits)
+        # Apply modular exponentiation oracle
+        oracle_operations = make_modular_exponentiation_oracle(a, N, n, m)
+        for i, operation in enumerate(oracle_operations):
+            control_qubit = n - 1 - i
+            circuit.add_gate(operation, target_qubits= (control_qubit,) + second_register_qubits)
 
-    # Measure the second register
-    circuit.add_measurement(key="y_0", qubits=second_register_qubits)
+        # Measure the second register
+        circuit.add_measurement(key="y_0", qubits=second_register_qubits)
 
-    # Apply inverse Quantum Fourier Transform to the first register
-    circuit.inverse_quantum_fourier_transform(target_qubits=range(n))
+        # Apply inverse Quantum Fourier Transform to the first register
+        circuit.inverse_quantum_fourier_transform(target_qubits=tuple(range(n)))
 
-    # Measure the first register
-    circuit.add_measurement(key="c", qubits=tuple(range(n)))
+        # Measure the first register
+        circuit.add_measurement(key="c", qubits=tuple(range(n)))
+
+        _, measurement_results = sim.run(circuit)
 
 
-    _, measurement_results = sim.run(circuit)
-    c = int(measurement_results["c"], 2)
+        c = int(measurement_results["c"], 2)
+        fractions = continued_fractions_algorithm(c, 2 ** n)
+        convergents = find_convergents(fractions)
 
-    return
+        for _, r_candidate in convergents:
+            if r_candidate % 2 != 0:
+                continue
+            if pow(a, r_candidate, N) != 1:
+                continue
+            x = pow(a, r_candidate // 2, N)
+            if x == 1 or x == N - 1:
+                continue
+
+            factor_1 = int(np.gcd(x - 1, N))
+            factor_2 = int(np.gcd(x + 1, N))
+
+            if 1 < factor_1 < N and 1 < factor_2 < N:
+                return factor_1, factor_2
+
+    return None
 
 
 
 if __name__ == "__main__":
-    print(continued_fractions_algorithm(45, 16))
+    N = 91
+
+    result = shors_factoring_algorithm(N, max_attempts=3)
+
+    if result is None:
+        print("Factorisation unsuccessful")
+    else:
+        factor_1, factor_2 = result
+        print(f"Factors of {N} are: {factor_1} and {factor_2}")

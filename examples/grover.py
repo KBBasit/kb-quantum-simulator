@@ -55,7 +55,6 @@ def grovers_search_algorithm(n, function):
     """
     sim = StatevectorSimulator()
 
-
     # Initialisation
     circuit = Circuit(num_qubits=n)
 
@@ -80,6 +79,35 @@ def grovers_search_algorithm(n, function):
             circuit.pauli_x(qubit)
         for qubit in range(n):
             circuit.hadamard(qubit)
+
+
+    # Measure
+    circuit.add_measurement(key="Measurement")
+
+
+    _, measurement_results = sim.run(circuit)
+    marked_bit = measurement_results["Measurement"]
+
+    return marked_bit
+
+
+
+if __name__ == "__main__":
+    n = 5
+    marked_bits = ["00000", "11111", "10101", "01010", "00101"]
+
+    for marked_bit in marked_bits:
+        function = make_f(marked_bit)
+        result = grovers_search_algorithm(n, function)
+
+        print(f"Marked bit: {marked_bit}, Found bit: {result}")
+        if result == marked_bit:
+            print("Successfully found the marked bit!")
+        else:
+            print("Failed to find the marked bit.")
+        print("-" * 50)
+
+
         
 
         

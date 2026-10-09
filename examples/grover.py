@@ -23,43 +23,63 @@ def make_f(marked_bit):
     return f
 
 
-def make_oracle(n, function):
+def make_phase_oracle(n, function):
     """
-    Creates the standard oracle
+    Creates the phase oracle
     Parameters:
-        n (int): The number of input bits.
+        n (int): The number of bits
         function (function): The function f to be evaluated.
     Returns:
-        Operator: An operator object representing the oracle.
+        Operator: An operator object representing the phase oracle.
     """
-    dimension = 2 ** (n + 1)
+    dimension = 2 ** n
     oracle = np.zeros((dimension, dimension), dtype=np.complex128)
 
     for x in range(2 ** n):
         x_binary = format(x, f'0{n}b')
         f_x = function(x_binary)
 
-        for y in range(2):
-            output_y = y ^ f_x
-
-            input_index = 2 * x + y
-            output_index = 2 * x + output_y
-
-            oracle[output_index, input_index] = 1
+        oracle[x, x] = -1 ** f_x
 
     return Operator(oracle)
 
 
-def grovers_search_algorithm(n):
+def grovers_search_algorithm(n, function):
     """
-    
+    Implements Grover's search algorithm.
+    Parameters:
+        n (int): The number of qubits
+        function (function): The function f to be evaluated
+    Returns:
+        str: The marked bit found by Grover's algorithm
     """
     sim = StatevectorSimulator()
+
 
     # Initialisation
     circuit = Circuit(num_qubits=n)
 
+
     # Create uniform superposition
     for qubit in range(n):
         circuit.hadamard(qubit)
-    
+
+
+    # Apply Grover iteration (up to global phase)
+    phase_oracle = make_phase_oracle(n, function)
+    for _ in range(int(np.pi / 4 * np.sqrt(2 ** n))):
+        circuit.add_gate(phase_oracle, tuple(range(n)))
+
+        for qubit in range(n):
+            circuit.hadamard(qubit)
+        for qubit in range(n):
+            circuit.pauli_x(qubit)
+        # multi controlled Z gate implementation here
+
+        for qubit in range(n):
+            circuit.pauli_x(qubit)
+        for qubit in range(n):
+            circuit.hadamard(qubit)
+        
+
+        

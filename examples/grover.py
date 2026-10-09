@@ -39,9 +39,24 @@ def make_phase_oracle(n, function):
         x_binary = format(x, f'0{n}b')
         f_x = function(x_binary)
 
-        oracle[x, x] = -1 ** f_x
+        oracle[x, x] = (-1) ** f_x
 
     return Operator(oracle)
+
+
+def make_mutli_qubit_controlled_z(n):
+    """
+    Creates a multi-qubit controlled Z gate
+    Parameters:
+        n (int): The number of qubits
+    Returns:
+        Operator: An operator object representing the multi-qubit controlled Z gate.
+    """
+    dimension = 2 ** n
+    controlled_Z = np.eye(dimension, dtype=np.complex128)
+    controlled_Z[-1, -1] = -1
+
+    return Operator(controlled_Z)
 
 
 def grovers_search_algorithm(n, function):
@@ -57,33 +72,28 @@ def grovers_search_algorithm(n, function):
 
     # Initialisation
     circuit = Circuit(num_qubits=n)
-
+    phase_oracle = make_phase_oracle(n, function)
+    cn_z = make_mutli_qubit_controlled_z(n)
 
     # Create uniform superposition
     for qubit in range(n):
         circuit.hadamard(qubit)
 
-
     # Apply Grover iteration (up to global phase)
-    phase_oracle = make_phase_oracle(n, function)
     for _ in range(int(np.pi / 4 * np.sqrt(2 ** n))):
         circuit.add_gate(phase_oracle, tuple(range(n)))
-
         for qubit in range(n):
             circuit.hadamard(qubit)
         for qubit in range(n):
             circuit.pauli_x(qubit)
-        # multi controlled Z gate implementation here
-
+        circuit.add_gate(cn_z, tuple(range(n)))
         for qubit in range(n):
             circuit.pauli_x(qubit)
         for qubit in range(n):
             circuit.hadamard(qubit)
-
 
     # Measure
     circuit.add_measurement(key="Measurement")
-
 
     _, measurement_results = sim.run(circuit)
     marked_bit = measurement_results["Measurement"]
@@ -106,8 +116,3 @@ if __name__ == "__main__":
         else:
             print("Failed to find the marked bit.")
         print("-" * 50)
-
-
-        
-
-        

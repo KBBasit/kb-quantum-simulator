@@ -1,7 +1,7 @@
-'''
+"""
 This module defines the Circuit class, which represents a
-quantum circuit composed of quantum gates and measurements.
-'''
+quantum circuit composed of quantum operations.
+"""
 
 from . import gates
 from .operators import Operator
@@ -9,7 +9,25 @@ from .operators import Operator
 
 
 class Circuit:
+    """
+    A class for representing quantum circuits.
+
+    Attributes
+    ----------
+    num_qubits : int
+        The number of qubits in the circuit.
+    operations : list
+        A list of operations in the circuit.
+    """
     def __init__(self, num_qubits):
+        """
+        Initialise a Circuit.
+
+        Parameters
+        ----------
+        num_qubits : int
+            The number of qubits in the circuit.
+        """
         if not isinstance(num_qubits, int) or num_qubits < 1:
             raise ValueError("Number of qubits must be a positive integer.")
 
@@ -18,14 +36,30 @@ class Circuit:
 
 
     def __len__(self):
+        """
+        Return the number of operations in the circuit.
+        """
         return len(self.operations)
 
 
     def __repr__(self):
+        """
+        Return a string representation of the circuit.
+        """
         return f"Circuit(num_qubits={self.num_qubits}, num_operations={len(self)})"
 
 
     def add_gate(self, operator, target_qubits):
+        """
+        Add a gate to the circuit.
+
+        Parameters
+        ----------
+        operator : Operator
+            The quantum operator to add.
+        target_qubits : tuple
+            A tuple of qubit indices where the operator will be applied.
+        """
         if not isinstance(operator, Operator):
             raise TypeError("Operator must be an instance of the Operator class.")
         if not isinstance(target_qubits, tuple):
@@ -43,6 +77,16 @@ class Circuit:
 
 
     def add_measurement(self, key, qubits=None):
+        """
+        Add a measurement operation to the circuit.
+
+        Parameters
+        ----------
+        key : str
+            The key to store the measurement result.
+        qubits : tuple, optional
+            A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
+        """
         if qubits is not None:
             if not isinstance(qubits, tuple):
                 raise TypeError("Target qubits must be a tuple or None.")
@@ -61,27 +105,21 @@ class Circuit:
 
 
     def c_apply(self, operator, measurement_key, measurement_condition, target_qubits):
-        '''
-        Apply a quantum operator conditional on the measurement results of specified qubits.
+        """
+        Apply a quantum operator conditional on the
+        measurement results of specified qubits.
 
-        Parameters:
-            operator (Operator): The quantum operator to apply.
-            measurement_key (str): The key of the measurement whose result will determine whether the operator is applied.
-            measurement_condition (str): The bitstring condition for applying the operator.
-            target_qubits (tuple): A tuple of qubit indices where the operator will be applied.
-        Returns:
-            None
-        Raises:
-            TypeError: If operator is not an instance of Operator.
-            TypeError: If target_qubits is not a tuple of integers.
-            ValueError: If the number of target qubits does not match the operator's qubit count.
-            ValueError: If qubit indices are out of bounds or not unique.
-            TypeError: If measurement_condition is not a string.
-            ValueError: If measurement_condition is not a valid bitstring.
-            TypeError: If measurement_key is not a string.
-            ValueError: If measurement_key does not exist in the circuit.
-            ValueError: If the length of the measurement condition does not match the number of measured qubits.
-        '''
+        Parameters
+        ----------
+            operator : Operator 
+                The quantum operator to apply.
+            measurement_key : str
+                The key of the measurement whose result will determine whether the operator is applied.
+            measurement_condition : str
+                The bitstring condition for applying the operator.
+            target_qubits : tuple
+                A tuple of qubit indices where the operator will be applied.
+        """
         if not isinstance(operator, Operator):
             raise TypeError("Operator must be an instance of the Operator class.")
         if not isinstance(target_qubits, tuple):
@@ -183,15 +221,28 @@ class Circuit:
 
 
     def quantum_fourier_transform(self, target_qubits):
+        """
+        Apply the quantum Fourier transform to the specified qubits.
+
+        Parameters
+        ----------
+        target_qubits : tuple
+            A tuple of qubit indices on which to apply the quantum Fourier transform.
+        """
         self._validate_target_qubits(target_qubits)
 
         self.operations.append(("qft", target_qubits))
 
 
     def inverse_quantum_fourier_transform(self, target_qubits):
+        """
+        Apply the inverse quantum Fourier transform to the specified qubits.
+
+        Parameters
+        ----------
+        target_qubits : tuple
+            A tuple of qubit indices on which to apply the inverse quantum Fourier transform.
+        """
         self._validate_target_qubits(target_qubits)
 
         self.operations.append(("inverse_qft", target_qubits))
-    
-
-

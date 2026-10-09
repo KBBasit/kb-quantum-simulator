@@ -1,6 +1,6 @@
-'''
+"""
 Quantum Phase Estimation
-'''
+"""
 
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
@@ -12,11 +12,17 @@ def phase_estimation(control_qubits, theta):
     """
     Constructs a quantum circuit for phase estimation.
 
-    Parameters:
-        control_qubits (int): The number of control qubits.
-        theta (float): The phase to be estimated.
-    Returns:
-        phase (float): The estimated phase.
+    Parameters
+    ----------
+        control_qubits : int
+            The number of control qubits.
+        theta : float
+            The phase to be estimated.
+
+    Returns
+    -------
+        float
+            The estimated phase.
     """
     sim = StatevectorSimulator()
 

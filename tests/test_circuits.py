@@ -1,26 +1,27 @@
 from qsim import gates
-from qsim import circuits
+from qsim.operators import Operator
+from qsim.circuits import Circuit
 import numpy as np
 import pytest
 
 
 
 def test_circuit_initialisation():
-    circuit = circuits.Circuit(num_qubits=3)
+    circuit = Circuit(num_qubits=3)
 
     assert circuit.num_qubits == 3
     assert len(circuit) == 0
 
     with pytest.raises(ValueError, match="Number of qubits must be a positive integer."):
-        circuits.Circuit(num_qubits=0)
+        Circuit(num_qubits=0)
 
     with pytest.raises(ValueError, match="Number of qubits must be a positive integer."):
-        circuits.Circuit(num_qubits=-1)
+        Circuit(num_qubits=-1)
 
 
 def test_add_gate_validations():
-    circuit = circuits.Circuit(num_qubits=3)
-    operator = circuits.Operator(gates.cnot())
+    circuit = Circuit(num_qubits=3)
+    operator = Operator(gates.cnot())
 
     with pytest.raises(TypeError, match="Operator must be an instance of the Operator class."):
         circuit.add_gate("not_an_operator", target_qubits=(0,))
@@ -42,7 +43,7 @@ def test_add_gate_validations():
 
 
 def test_add_measurement_validations():
-    circuit = circuits.Circuit(num_qubits=3)
+    circuit = Circuit(num_qubits=3)
 
     with pytest.raises(TypeError, match="Target qubits must be a tuple or None."):
         circuit.add_measurement(key="alice", qubits=[0])
@@ -65,8 +66,8 @@ def test_add_measurement_validations():
 
 
 def test_c_apply_validations():
-    circuit = circuits.Circuit(num_qubits=3)
-    operator = circuits.Operator(gates.cnot())
+    circuit = Circuit(num_qubits=3)
+    operator = Operator(gates.cnot())
     circuit.add_measurement(key="alice", qubits=(0,1))
     circuit.add_measurement(key="Eve", qubits=None)
 
@@ -108,12 +109,12 @@ def test_c_apply_validations():
 
 
 def test_c_apply():
-    circuit = circuits.Circuit(num_qubits=3)
+    circuit = Circuit(num_qubits=3)
     circuit.hadamard(target_qubit=0)
     circuit.add_measurement(key="alice", qubits=(0,))
     circuit.add_measurement(key="eve", qubits=None)
-    circuit.c_apply(operator=circuits.Operator(gates.cnot()), measurement_key="alice", measurement_condition="1", target_qubits=(1,2))
-    circuit.c_apply(operator=circuits.Operator(gates.cnot()), measurement_key="eve", measurement_condition="000", target_qubits=(1,2))
+    circuit.c_apply(operator=Operator(gates.cnot()), measurement_key="alice", measurement_condition="1", target_qubits=(1,2))
+    circuit.c_apply(operator=Operator(gates.cnot()), measurement_key="eve", measurement_condition="000", target_qubits=(1,2))
 
     operation_type_1, operator_1, measurement_key_1, measurement_condition_1, target_qubits_1 = circuit.operations[3]
     assert operation_type_1 == "c_apply"
@@ -131,7 +132,7 @@ def test_c_apply():
 
 
 def test_add_measurement():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.add_measurement(key="alice", qubits=(0,))
 
     operation_type, qubits, key = circuit.operations[0]
@@ -142,7 +143,7 @@ def test_add_measurement():
 
 
 def test_pauli_x_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.pauli_x(target_qubit=0)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -153,7 +154,7 @@ def test_pauli_x_gate_addition():
 
 
 def test_pauli_y_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.pauli_y(target_qubit=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -164,7 +165,7 @@ def test_pauli_y_gate_addition():
 
 
 def test_pauli_z_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.pauli_z(target_qubit=0)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -175,7 +176,7 @@ def test_pauli_z_gate_addition():
 
 
 def test_hadamard_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.hadamard(target_qubit=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -186,7 +187,7 @@ def test_hadamard_gate_addition():
 
 
 def test_s_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.s_gate(target_qubit=0)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -197,7 +198,7 @@ def test_s_gate_addition():
 
 
 def test_t_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.t_gate(target_qubit=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -208,7 +209,7 @@ def test_t_gate_addition():
 
 
 def test_cnot_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.cnot(control_qubit=0, target_qubit=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -219,7 +220,7 @@ def test_cnot_gate_addition():
 
 
 def test_controlled_z_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.controlled_z(control_qubit=0, target_qubit=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -230,7 +231,7 @@ def test_controlled_z_gate_addition():
 
 
 def test_swap_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.swap(qubit1=0, qubit2=1)
 
     operation_type, operator, target_qubits = circuit.operations[0]
@@ -241,7 +242,7 @@ def test_swap_gate_addition():
 
 
 def test_r_x_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_x(target_qubit=0, theta=theta)
 
@@ -253,7 +254,7 @@ def test_r_x_gate_addition():
 
 
 def test_r_y_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_y(target_qubit=1, theta=theta)
 
@@ -265,7 +266,7 @@ def test_r_y_gate_addition():
 
 
 def test_r_z_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.r_z(target_qubit=0, theta=theta)
 
@@ -277,7 +278,7 @@ def test_r_z_gate_addition():
 
 
 def test_phase_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.phase_gate(target_qubit=1, theta=theta)
 
@@ -289,7 +290,7 @@ def test_phase_gate_addition():
 
 
 def test_controlled_phase_gate_addition():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     theta = np.pi / 4
     circuit.controlled_phase(control_qubit=0, target_qubit=1, theta=theta)
 
@@ -301,7 +302,7 @@ def test_controlled_phase_gate_addition():
 
 
 def test_length_of_circuit():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     assert len(circuit) == 0
 
     circuit.pauli_x(target_qubit=0)
@@ -312,7 +313,7 @@ def test_length_of_circuit():
 
 
 def test_representation_of_circuit():
-    circuit = circuits.Circuit(num_qubits=2)
+    circuit = Circuit(num_qubits=2)
     circuit.pauli_x(target_qubit=0)
     circuit.cnot(control_qubit=0, target_qubit=1)
 
@@ -321,7 +322,7 @@ def test_representation_of_circuit():
 
 
 def test_qft_and_inverse_qft_validations():
-    circuit = circuits.Circuit(num_qubits=3)
+    circuit = Circuit(num_qubits=3)
 
     with pytest.raises(TypeError, match="Target qubits must be a tuple."):
         circuit.quantum_fourier_transform(target_qubits=[0, 1, 2])
@@ -341,7 +342,7 @@ def test_qft_and_inverse_qft_validations():
 
 
 def test_qft_and_inverse_qft_addition():
-    circuit = circuits.Circuit(num_qubits=3)
+    circuit = Circuit(num_qubits=3)
     circuit.quantum_fourier_transform(target_qubits=(0, 1, 2))
     circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 2))
 

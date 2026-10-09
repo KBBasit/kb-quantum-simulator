@@ -1,6 +1,6 @@
-'''
+"""
 Shor's Factoring Algorithm
-'''
+"""
 
 from qsim.operators import Operator
 from qsim.circuits import Circuit
@@ -11,14 +11,24 @@ import numpy as np
 
 def make_modular_exponentiation_oracle(a, N, n, m):
     """
-    Construct modular exponentiation oracle using binary exponentation
-    Parameters:
-        a (int): The base for modular exponentiation.
-        N (int): The modulus for modular exponentiation.
-        n (int): The number of qubits for the input register.
-        m (int): The number of qubits for the output register.
-    Returns:
-        list: A list of operator objects for oracle operations
+    Construct modular exponentiation oracle using binary
+    exponentation
+
+    Parameters
+    ----------
+        a : int
+            The base for modular exponentiation.
+        N : int
+            The modulus for modular exponentiation.
+        n : int
+            The number of qubits for the input register.
+        m : int
+            The number of qubits for the output register.
+
+    Returns
+    -------
+        list
+            A list of operator objects for oracle operations
     """
     sequence = [a % N]
     for _ in range(n - 1):
@@ -44,11 +54,18 @@ def make_modular_exponentiation_oracle(a, N, n, m):
 def continued_fractions_algorithm(numerator, denominator):
     """
     Implements the continued fractions algorithm
-    Parameters:
-        numerator (int): The numerator of the fraction.
-        denominator (int): The denominator of the fraction.
-    Returns:
-        list: A list of integers representing the continued fraction.
+
+    Parameters
+    ----------
+        numerator : int
+            The numerator of the fraction.
+        denominator : int
+            The denominator of the fraction.
+
+    Returns
+    -------
+        list
+            A list of integers representing the continued fraction.
     """
     fractions = []
     while denominator:
@@ -61,10 +78,16 @@ def continued_fractions_algorithm(numerator, denominator):
 def find_convergents(fractions):
     """
     Finds the convergents of a continued fraction.
-    Parameters:
-        fractions (list): A list of integers representing the continued fraction.
-    Returns:
-        list: A list of tuples representing the convergents (p, q).
+
+    Parameters
+    ----------
+        fractions : list
+            A list of integers representing the continued fraction.
+
+    Returns
+    -------
+        list
+            A list of tuples representing the convergents (p, q).
     """
     convergents = []
     p0, p1 = 1, fractions[0]
@@ -82,12 +105,20 @@ def find_convergents(fractions):
 
 def shors_factoring_algorithm(N, max_attempts=10):
     """
-    Implements Shor's factoring algorithm to find non-trivial factors of a composite number N.
-    Parameters:
-        N (int): The composite number to be factored.
-        max_attempts (int): The maximum number of attempts to find the factors. Default is 10.
-    Returns:
-        tuple: A tuple containing two non-trivial factors of N, or None if no factors are found.
+    Implements Shor's factoring algorithm to find 
+    non-trivial factors of a composite number N.
+
+    Parameters
+    ----------
+        N : int
+            The composite number to be factored.
+        max_attempts : int
+            The maximum number of attempts to find the factors. Default is 10.
+
+    Returns
+    -------
+        tuple
+            A tuple containing two non-trivial factors of N, or None if no factors are found.
     """
     sim = StatevectorSimulator()
 

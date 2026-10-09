@@ -1,3 +1,8 @@
+"""
+A module for simulating quantum circuits using state 
+vectors.
+"""
+
 from .gates import hadamard, swap, controlled_phase
 from .states import StateVector
 from .operators import Operator
@@ -8,10 +13,26 @@ import numpy as np
 
 
 class StatevectorSimulator:
-    '''
-    A class for simulating quantum circuits using state vectors.
-    '''
+    """
+    A class for simulating quantum circuits using state
+    vectors.
+    """
     def run(self, circuit, initial_state=None):
+        """
+        Run the quantum circuit on the simulator.
+
+        Parameters
+        ----------
+        circuit : Circuit
+            The quantum circuit to simulate.
+        initial_state : StateVector, optional
+            The initial state of the quantum system. If None, the zero state is used. Default is None.
+
+        Returns
+        -------
+        tuple
+            A tuple containing the final state of the quantum system and the measurement results.
+        """
         if not isinstance(circuit, Circuit):
             raise TypeError("Circuit must be an instance of the Circuit class.")
         if initial_state is None:

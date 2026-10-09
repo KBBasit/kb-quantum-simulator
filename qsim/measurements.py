@@ -1,19 +1,27 @@
-import numpy as np
+"""
+This module contains functions for performing measurements
+on quantum states.
+"""
+
 from .states import StateVector
+import numpy as np
 
 
 
 def measurement_probabilities(state_vector):
     """
-    Calculate the measurement probabilities for each basis 
+    Calculate the measurement probabilities for each basis
     state.
 
-    Parameters:
-        state_vector (StateVector): The quantum state vector.
-    Returns:
-        numpy.ndarray: An array of measurement probabilities for each basis state.
-    Raises:
-        TypeError: If state_vector is not an instance of StateVector.
+    Parameters
+    ----------
+        state_vector : StateVector
+            The quantum state vector.
+
+    Returns
+    -------
+        numpy.ndarray
+            The measurement probabilities for each basis state.
     """
     if not isinstance(state_vector, StateVector):
         raise TypeError("Input must be a StateVector object.")
@@ -40,16 +48,17 @@ def measure(state_vector, qubits=None):
     Perform a measurement on the specified qubits of the
     state vector and collapse the state accordingly.
 
-    Parameters:
-        state_vector (StateVector): The quantum state vector.
-        qubits (tuple): A tuple of qubit indices to measure. If None, all qubits are measured.
-    Returns:
-        str: The bitstring of the measured basis state.
-    Raises:
-        TypeError: If state_vector is not an instance of StateVector.
-        TypeError: If qubits is not a tuple of integers or None.
-        ValueError: If qubit indices are out of bounds.
-        ValueError: If qubit indices are not unique.
+    Parameters
+    ----------
+        state_vector : StateVector
+            The quantum state vector.
+        qubits : tuple, optional
+            A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
+
+    Returns
+    -------
+        str
+            The bitstring of the measured basis state.
     """
     _validate_state_type_and_qubit_inputs(state_vector, qubits)
 
@@ -89,18 +98,19 @@ def sample(state_vector, shots, qubits=None):
     Sample measurement outcomes from the state vector's
     probability distribution.
 
-    Parameters:
-        state_vector (StateVector): The quantum state vector.
-        qubits (tuple): A tuple of qubit indices to measure. If None, all qubits are measured.
-        shots (int): The number of measurements to perform.
-    Returns:
-        list: A list of bitstrings corresponding to the measured basis states.
-    Raises:
-        TypeError: If state_vector is not an instance of StateVector or if shots is not an integer.
-        TypeError: If qubits is not a tuple of integers or None.
-        ValueError: If qubit indices are out of bounds.
-        ValueError: If qubit indices are not unique.
-        ValueError: If shots is not a positive integer.
+    Parameters
+    ----------
+        state_vector : StateVector
+            The quantum state vector.
+        qubits : tuple, optional
+            A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
+        shots : int
+            The number of measurements to perform.
+
+    Returns
+    -------
+        list
+            A list of bitstrings corresponding to the measured basis states.
     """
     _validate_state_type_and_qubit_inputs(state_vector, qubits)
     if not isinstance(shots, int):

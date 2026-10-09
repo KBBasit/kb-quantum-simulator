@@ -1,6 +1,6 @@
-'''
+"""
 Deutsch-Jozsa Algorithm
-'''
+"""
 
 from qsim.operators import Operator
 from qsim.circuits import Circuit
@@ -11,12 +11,20 @@ import numpy as np
 
 def make_f(n, function_type):
     """
-    Creates a function f: {0,1}^n -> {0,1} that is either constant or balanced.
-    Parameters:
-        n (int): The number of input bits.
-        function_type (str): The type of function to create ('constant' or 'balanced').
-    Returns:
-        function: A function that takes a binary string of length n and returns 0 or 1.
+    Creates a function f: {0,1}^n -> {0,1} that is either
+    constant or balanced.
+
+    Parameters
+    ----------
+        n : int 
+            The number of input bits.
+        function_type : str
+            The type of function to create ('constant' or 'balanced').
+
+    Returns
+    -------
+        callable
+            A function that takes a binary string of length n and returns 0 or 1.
     """
     if function_type == 'constant':
         return lambda x: 0
@@ -31,11 +39,18 @@ def make_f(n, function_type):
 def make_oracle(n, function):
     """
     Creates an oracle for the Deutsch-Jozsa algorithm.
-    Parameters:
-        n (int): The number of input bits.
-        function (function): The function f to be evaluated.
-    Returns:
-        Operator: An operator object representing the oracle.
+
+    Parameters
+    ----------
+        n : int
+            The number of input bits.
+        function : callable
+            The function f to be evaluated.
+
+    Returns
+    -------
+        Operator
+            An operator object representing the oracle.
     """
     dimension = 2 ** (n + 1)
     oracle = np.zeros((dimension, dimension), dtype=np.complex128)
@@ -56,14 +71,21 @@ def make_oracle(n, function):
 
 
 def deutsch_jozsa_algorithm(n, function):
-    '''
+    """
     Implements the Deutsch-Jozsa algorithm
-    Parameters:
-        n (int): The number of input bits.
-        function (function): The function f to be evaluated.
-    Returns:
-        str: The result of the Deutsch-Jozsa algorithm ('constant' or 'balanced').
-    '''
+
+    Parameters
+    ----------
+        n : int
+            The number of input bits.
+        function : callable
+            The function f to be evaluated.
+
+    Returns
+    -------
+        str
+            The result of the Deutsch-Jozsa algorithm ('constant' or 'balanced').
+    """
     sim = StatevectorSimulator()
 
     circuit = Circuit(num_qubits=n + 1)

@@ -1,30 +1,30 @@
-from qsim import gates
-from qsim import states
-from qsim import operators
+from qsim.gates import identity, cnot, pauli_x, pauli_y
+from qsim.states import StateVector
+from qsim.operators import Operator
 import numpy as np
 import pytest
 
 
 
 def test_operator_initialisation():
-    matrix = gates.identity()
-    operator = operators.Operator(matrix)
+    matrix = identity()
+    operator = Operator(matrix)
 
     assert operator.dimension == 2
     assert operator.is_unitary
     assert operator.operator_qubits == 1
 
     with pytest.raises(ValueError, match="Operator must be a square matrix."):
-        operators.Operator([[1, 0], [0, 1], [1, 0]])
+        Operator([[1, 0], [0, 1], [1, 0]])
 
     with pytest.raises(ValueError, match="Operator dimension must be a power of 2."):
-        operators.Operator([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+        Operator([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
 
 
 def test_operator_application_validations():
-    cnot_matrix = gates.cnot()
-    cnot_operator = operators.Operator(cnot_matrix)
-    state_vector = states.StateVector([1, 0, 0, 0]) 
+    cnot_matrix = cnot()
+    cnot_operator = Operator(cnot_matrix)
+    state_vector = StateVector([1, 0, 0, 0]) 
 
     with pytest.raises(TypeError, match="State vector must be a StateVector object."):
         cnot_operator.apply_gate([1, 0, 0, 0], target_qubits=(0, 1), inplace=False)
@@ -33,7 +33,7 @@ def test_operator_application_validations():
                           [0, 1, 0, 0],
                           [0, 0, 1, 0],
                           [0, 0, 1, 0]]
-    non_unitary_operator = operators.Operator(non_unitary_matrix)
+    non_unitary_operator = Operator(non_unitary_matrix)
 
     with pytest.raises(ValueError, match="Operator must be unitary."):
         non_unitary_operator.apply_gate(state_vector, target_qubits=(0, 1), inplace=False)
@@ -55,18 +55,18 @@ def test_operator_application_validations():
 
 
 def test_operator_application():
-    matrix_1 = gates.pauli_x()
-    matrix_2 = gates.pauli_y() 
-    matrix_3 = gates.cnot()
-    operator_1 = operators.Operator(matrix_1)
-    operator_2 = operators.Operator(matrix_2)
-    operator_3 = operators.Operator(matrix_3)
+    matrix_1 = pauli_x()
+    matrix_2 = pauli_y() 
+    matrix_3 = cnot()
+    operator_1 = Operator(matrix_1)
+    operator_2 = Operator(matrix_2)
+    operator_3 = Operator(matrix_3)
 
-    state_vector_1 = states.StateVector([1, 0])
-    state_vector_2 = states.StateVector([0, 1])
-    state_vector_3 = states.StateVector(1/np.sqrt(2) * np.array([1, 0, 1, 0]))
-    state_vector_4 = states.StateVector([1, 0, 0, 0, 0, 0, 0, 0])
-    state_vector_5 = states.StateVector(1/np.sqrt(2) * np.array([1, 0, 0, 0, 1, 0, 0, 0]))
+    state_vector_1 = StateVector([1, 0])
+    state_vector_2 = StateVector([0, 1])
+    state_vector_3 = StateVector(1/np.sqrt(2) * np.array([1, 0, 1, 0]))
+    state_vector_4 = StateVector([1, 0, 0, 0, 0, 0, 0, 0])
+    state_vector_5 = StateVector(1/np.sqrt(2) * np.array([1, 0, 0, 0, 1, 0, 0, 0]))
 
     result_state_vector_1 = operator_1.apply_gate(state_vector_1, target_qubits=(0,), inplace=False)
     assert result_state_vector_1 is not state_vector_1

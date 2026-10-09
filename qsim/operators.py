@@ -1,18 +1,37 @@
-'''
+"""
 This module contains the implementation of operators used
 in the simulation of quantum circuits.
-'''
+"""
 
-import numpy as np
 from .states import StateVector
+import numpy as np
 
 
 
 class Operator:
-    '''
+    """
     A class for representing quantum operators.
-    '''
+
+    Attributes
+    ----------
+    matrix : numpy.ndarray
+        The matrix representation of the operator.
+    dimension : int
+        The dimension of the operator.
+    is_unitary : bool
+        Whether the operator is unitary.
+    operator_qubits : int
+        The number of qubits the operator acts on.
+    """
     def __init__(self, matrix):
+        """
+        Initialise an Operator.
+
+        Parameters
+        ----------
+        matrix : (array-like)
+            The matrix representation of the operator.
+        """
         matrix = np.asarray(matrix, dtype=np.complex128)
 
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
@@ -26,17 +45,17 @@ class Operator:
 
     @property
     def dimension(self):
-        '''
+        """
         Return the dimension of the operator.
-        '''
+        """
         return self.matrix.shape[0]
 
 
     @property
     def is_unitary(self):
-        '''
+        """
         Check if the operator is unitary.
-        '''
+        """
         identity = np.eye(self.dimension, dtype=np.complex128)
 
         return np.allclose(self.matrix.conj().T @ self.matrix, identity)
@@ -44,9 +63,9 @@ class Operator:
 
     @property
     def operator_qubits(self):
-        '''
+        """
         Return the number of qubits the operator acts on.
-        '''
+        """
         return int(np.log2(self.matrix.shape[0]))
 
 
@@ -68,10 +87,24 @@ class Operator:
 
 
     def apply_gate(self, state_vector, target_qubits = (0,), inplace=False):
-        '''
+        """
         Apply the operator to the given state vector on the
         specified target qubits.
-        '''
+
+        Parameters
+        ----------
+        state_vector : StateVector
+            The quantum state vector to which the operator is applied.
+        target_qubits : tuple, optional
+            A tuple of qubit indices on which the operator acts. Default is (0,).
+        inplace : bool, optional
+            If True, modify the state vector in place. If False, return a new state vector. Default is False.
+
+        Returns
+        -------
+        StateVector
+            The resulting state vector after applying the operator.
+        """
         self._validate_gate_application(state_vector, target_qubits)
 
         tensor = state_vector.amplitudes.reshape([2] * state_vector.num_qubits)
@@ -89,7 +122,3 @@ class Operator:
             return state_vector
 
         return StateVector(result)
-
-        
-        
-

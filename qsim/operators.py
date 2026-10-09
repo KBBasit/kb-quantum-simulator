@@ -86,7 +86,7 @@ class Operator:
             raise ValueError("Target qubits must be unique.")
 
 
-    def apply_gate(self, state_vector, target_qubits = (0,), inplace=False):
+    def apply_gate(self, state_vector, target_qubits = (0, ), inplace=False):
         """
         Apply the operator to the given state vector on the
         specified target qubits.

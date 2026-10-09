@@ -57,7 +57,7 @@ def make_phase_oracle(n, function):
     return Operator(oracle)
 
 
-def make_mutli_qubit_controlled_z(n):
+def make_multi_qubit_controlled_z(n):
     """
     Creates a multi-qubit controlled Z gate
 
@@ -99,7 +99,7 @@ def grovers_search_algorithm(n, function):
     # Initialisation
     circuit = Circuit(num_qubits=n)
     phase_oracle = make_phase_oracle(n, function)
-    cn_z = make_mutli_qubit_controlled_z(n)
+    cn_z = make_multi_qubit_controlled_z(n)
 
     # Create uniform superposition
     for qubit in range(n):

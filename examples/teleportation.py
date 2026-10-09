@@ -55,10 +55,10 @@ def teleportation(state_vector):
 
     circuit.c_apply(operator=Operator(pauli_z()), measurement_key="alice", measurement_condition="10", target_qubits=(2,))
 
-    circuit.c_apply(operator=Operator(pauli_x()), measurement_key = "alice", measurement_condition="01", target_qubits=(2,))
+    circuit.c_apply(operator=Operator(pauli_x()), measurement_key="alice", measurement_condition="01", target_qubits=(2,))
 
-    circuit.c_apply(operator=Operator(pauli_x()), measurement_key = "alice", measurement_condition="11", target_qubits=(2,))
-    circuit.c_apply(operator=Operator(pauli_z()), measurement_key = "alice", measurement_condition="11", target_qubits=(2,))
+    circuit.c_apply(operator=Operator(pauli_x()), measurement_key="alice", measurement_condition="11", target_qubits=(2,))
+    circuit.c_apply(operator=Operator(pauli_z()), measurement_key="alice", measurement_condition="11", target_qubits=(2,))
 
     sim = StatevectorSimulator()
     final_state, measurement_result = sim.run(circuit, initial_state=initial_state)

@@ -326,18 +326,22 @@ def test_qft_and_inverse_qft_validations():
 
     with pytest.raises(TypeError, match="Target qubits must be a tuple."):
         circuit.quantum_fourier_transform(target_qubits=[0, 1, 2])
+    with pytest.raises(TypeError, match="Target qubits must be a tuple."):
         circuit.inverse_quantum_fourier_transform(target_qubits=[0, 1, 2])
 
     with pytest.raises(TypeError, match="All qubit indices must be integers."):
         circuit.quantum_fourier_transform(target_qubits=(0, '1', 2))
+    with pytest.raises(TypeError, match="All qubit indices must be integers."):
         circuit.inverse_quantum_fourier_transform(target_qubits=(0, '1', 2))
 
     with pytest.raises(ValueError, match="Qubit indices must be unique."):
         circuit.quantum_fourier_transform(target_qubits=(0, 1, 1))
+    with pytest.raises(ValueError, match="Qubit indices must be unique."):
         circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 1))
 
     with pytest.raises(ValueError, match="Qubit indices must be within the range of the circuit's qubits."):
         circuit.quantum_fourier_transform(target_qubits=(0, 1, 3))
+    with pytest.raises(ValueError, match="Qubit indices must be within the range of the circuit's qubits."):
         circuit.inverse_quantum_fourier_transform(target_qubits=(0, 1, 3))
 
 

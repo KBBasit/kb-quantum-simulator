@@ -3,8 +3,8 @@ This module contains functions for performing measurements
 on quantum states.
 """
 
-from .states import StateVector
 import numpy as np
+from .states import StateVector
 
 
 
@@ -15,13 +15,13 @@ def measurement_probabilities(state_vector):
 
     Parameters
     ----------
-        state_vector : StateVector
-            The quantum state vector.
+    state_vector : StateVector
+        The quantum state vector.
 
     Returns
     -------
-        numpy.ndarray
-            The measurement probabilities for each basis state.
+    numpy.ndarray
+        The measurement probabilities for each basis state.
     """
     if not isinstance(state_vector, StateVector):
         raise TypeError("Input must be a StateVector object.")
@@ -50,15 +50,15 @@ def measure(state_vector, qubits=None):
 
     Parameters
     ----------
-        state_vector : StateVector
-            The quantum state vector.
-        qubits : tuple, optional
-            A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
+    state_vector : StateVector
+        The quantum state vector.
+    qubits : tuple, optional
+        A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
 
     Returns
     -------
-        str
-            The bitstring of the measured basis state.
+    str
+        The bitstring of the measured basis state.
     """
     _validate_state_type_and_qubit_inputs(state_vector, qubits)
 
@@ -100,17 +100,17 @@ def sample(state_vector, shots, qubits=None):
 
     Parameters
     ----------
-        state_vector : StateVector
-            The quantum state vector.
-        qubits : tuple, optional
-            A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
-        shots : int
-            The number of measurements to perform.
+    state_vector : StateVector
+        The quantum state vector.
+    qubits : tuple, optional
+        A tuple of qubit indices to measure. If None, all qubits are measured. Default is None.
+    shots : int
+        The number of measurements to perform.
 
     Returns
     -------
-        list
-            A list of bitstrings corresponding to the measured basis states.
+    list
+        A list of bitstrings corresponding to the measured basis states.
     """
     _validate_state_type_and_qubit_inputs(state_vector, qubits)
     if not isinstance(shots, int):

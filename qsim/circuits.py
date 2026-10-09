@@ -111,14 +111,14 @@ class Circuit:
 
         Parameters
         ----------
-            operator : Operator 
-                The quantum operator to apply.
-            measurement_key : str
-                The key of the measurement whose result will determine whether the operator is applied.
-            measurement_condition : str
-                The bitstring condition for applying the operator.
-            target_qubits : tuple
-                A tuple of qubit indices where the operator will be applied.
+        operator : Operator 
+            The quantum operator to apply.
+        measurement_key : str
+            The key of the measurement whose result will determine whether the operator is applied.
+        measurement_condition : str
+            The bitstring condition for applying the operator.
+        target_qubits : tuple
+            A tuple of qubit indices where the operator will be applied.
         """
         if not isinstance(operator, Operator):
             raise TypeError("Operator must be an instance of the Operator class.")

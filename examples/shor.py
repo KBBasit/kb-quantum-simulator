@@ -2,10 +2,10 @@
 Shor's Factoring Algorithm
 """
 
+import numpy as np
 from qsim.operators import Operator
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-import numpy as np
 
 
 
@@ -16,19 +16,19 @@ def make_modular_exponentiation_oracle(a, N, n, m):
 
     Parameters
     ----------
-        a : int
-            The base for modular exponentiation.
-        N : int
-            The modulus for modular exponentiation.
-        n : int
-            The number of qubits for the input register.
-        m : int
-            The number of qubits for the output register.
+    a : int
+        The base for modular exponentiation.
+    N : int
+        The modulus for modular exponentiation.
+    n : int
+        The number of qubits for the input register.
+    m : int
+        The number of qubits for the output register.
 
     Returns
     -------
-        list
-            A list of operator objects for oracle operations
+    list
+        A list of operator objects for oracle operations
     """
     sequence = [a % N]
     for _ in range(n - 1):
@@ -57,15 +57,15 @@ def continued_fractions_algorithm(numerator, denominator):
 
     Parameters
     ----------
-        numerator : int
-            The numerator of the fraction.
-        denominator : int
-            The denominator of the fraction.
+    numerator : int
+        The numerator of the fraction.
+    denominator : int
+        The denominator of the fraction.
 
     Returns
     -------
-        list
-            A list of integers representing the continued fraction.
+    list
+        A list of integers representing the continued fraction.
     """
     fractions = []
     while denominator:
@@ -81,13 +81,13 @@ def find_convergents(fractions):
 
     Parameters
     ----------
-        fractions : list
-            A list of integers representing the continued fraction.
+    fractions : list
+        A list of integers representing the continued fraction.
 
     Returns
     -------
-        list
-            A list of tuples representing the convergents (p, q).
+    list
+        A list of tuples representing the convergents (p, q).
     """
     convergents = []
     p0, p1 = 1, fractions[0]
@@ -110,15 +110,15 @@ def shors_factoring_algorithm(N, max_attempts=10):
 
     Parameters
     ----------
-        N : int
-            The composite number to be factored.
-        max_attempts : int
-            The maximum number of attempts to find the factors. Default is 10.
+    N : int
+        The composite number to be factored.
+    max_attempts : int
+        The maximum number of attempts to find the factors. Default is 10.
 
     Returns
     -------
-        tuple
-            A tuple containing two non-trivial factors of N, or None if no factors are found.
+    tuple or None
+        A tuple containing two non-trivial factors of N, or None if no factors are found.
     """
     sim = StatevectorSimulator()
 

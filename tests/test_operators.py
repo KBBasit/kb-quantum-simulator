@@ -1,8 +1,8 @@
+import numpy as np
+import pytest
 from qsim.gates import identity, cnot, pauli_x, pauli_y
 from qsim.states import StateVector
 from qsim.operators import Operator
-import numpy as np
-import pytest
 
 
 

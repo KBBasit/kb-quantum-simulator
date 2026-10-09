@@ -2,10 +2,10 @@
 Grover's Search Algorithm
 """
 
+import numpy as np
 from qsim.operators import Operator
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-import numpy as np
 
 
 
@@ -15,13 +15,13 @@ def make_f(marked_bit):
 
     Parameters
     ----------
-        marked_bit : str
-            The input bit that the function returns 1 for
+    marked_bit : str
+        The input bit that the function returns 1 for
 
     Returns
     -------
-        callable
-            A function that takes a binary string and returns 1 for the marked bit, else 0
+    callable
+        A function that takes a binary string and returns 1 for the marked bit, else 0
     """
     def f(x):
         return 1 if x == marked_bit else 0
@@ -35,15 +35,15 @@ def make_phase_oracle(n, function):
 
     Parameters
     ----------
-        n : int
-            The number of bits
-        function : callable
-            The function f to be evaluated.
+    n : int
+        The number of bits
+    function : callable
+        The function f to be evaluated.
 
     Returns
     -------
-        Operator
-            An operator object representing the phase oracle.
+    Operator
+        An operator object representing the phase oracle.
     """
     dimension = 2 ** n
     oracle = np.zeros((dimension, dimension), dtype=np.complex128)
@@ -63,13 +63,13 @@ def make_mutli_qubit_controlled_z(n):
 
     Parameters
     ----------
-        n : int
-            The number of qubits
+    n : int
+        The number of qubits
 
     Returns
     -------
-        Operator
-            An operator object representing the multi-qubit controlled Z gate.
+    Operator
+        An operator object representing the multi-qubit controlled Z gate.
     """
     dimension = 2 ** n
     controlled_Z = np.eye(dimension, dtype=np.complex128)
@@ -84,15 +84,15 @@ def grovers_search_algorithm(n, function):
 
     Parameters
     ----------
-        n : int
-            The number of qubits
-        function : callable
-            The function f to be evaluated
+    n : int
+        The number of qubits
+    function : callable
+        The function f to be evaluated
 
     Returns
     -------
-        str
-            The marked bit found by Grover's algorithm
+    str
+        The marked bit found by Grover's algorithm
     """
     sim = StatevectorSimulator()
 

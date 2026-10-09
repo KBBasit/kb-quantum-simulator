@@ -2,10 +2,10 @@
 Deutsch-Jozsa Algorithm
 """
 
+import numpy as np
 from qsim.operators import Operator
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-import numpy as np
 
 
 
@@ -16,15 +16,15 @@ def make_f(n, function_type):
 
     Parameters
     ----------
-        n : int 
-            The number of input bits.
-        function_type : str
-            The type of function to create ('constant' or 'balanced').
+    n : int 
+        The number of input bits.
+    function_type : str
+        The type of function to create ('constant' or 'balanced').
 
     Returns
     -------
-        callable
-            A function that takes a binary string of length n and returns 0 or 1.
+    callable
+        A function that takes a binary string of length n and returns 0 or 1.
     """
     if function_type == 'constant':
         return lambda x: 0
@@ -42,15 +42,15 @@ def make_oracle(n, function):
 
     Parameters
     ----------
-        n : int
-            The number of input bits.
-        function : callable
-            The function f to be evaluated.
+    n : int
+        The number of input bits.
+    function : callable
+        The function f to be evaluated.
 
     Returns
     -------
-        Operator
-            An operator object representing the oracle.
+    Operator
+        An operator object representing the oracle.
     """
     dimension = 2 ** (n + 1)
     oracle = np.zeros((dimension, dimension), dtype=np.complex128)
@@ -76,15 +76,15 @@ def deutsch_jozsa_algorithm(n, function):
 
     Parameters
     ----------
-        n : int
-            The number of input bits.
-        function : callable
-            The function f to be evaluated.
+    n : int
+        The number of input bits.
+    function : callable
+        The function f to be evaluated.
 
     Returns
     -------
-        str
-            The result of the Deutsch-Jozsa algorithm ('constant' or 'balanced').
+    str
+        The result of the Deutsch-Jozsa algorithm ('constant' or 'balanced').
     """
     sim = StatevectorSimulator()
 

@@ -1,6 +1,6 @@
-from qsim import gates
 import numpy as np
 import pytest
+from qsim import gates
 
 
 

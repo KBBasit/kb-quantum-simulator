@@ -47,7 +47,7 @@ class StateVector:
     @property
     def num_qubits(self):
         """
-        Return the number of qubits represented by the state
+        Return the number of qubits represented by the
         state vector.
         """
         return int(np.log2(self.amplitudes.size))
@@ -65,8 +65,8 @@ class StateVector:
     @classmethod
     def zero_state(cls, num_qubits):
         """
-        Create a state vector representing the |0> state
-        for the given number of qubits.
+        Create a state vector representing the |0...0> 
+        state for the given number of qubits.
 
         Parameters
         ----------
@@ -76,7 +76,8 @@ class StateVector:
         Returns
         -------
         StateVector
-            A StateVector object representing the |0> state.
+            A StateVector object representing the |0...0> 
+            state.
         """
         if num_qubits < 1:
             raise ValueError("Number of qubits must be at least 1.")

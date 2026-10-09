@@ -2,9 +2,9 @@
 Quantum Phase Estimation
 """
 
+import numpy as np
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-import numpy as np
 
 
 
@@ -14,15 +14,15 @@ def phase_estimation(control_qubits, theta):
 
     Parameters
     ----------
-        control_qubits : int
-            The number of control qubits.
-        theta : float
-            The phase to be estimated.
+    control_qubits : int
+        The number of control qubits.
+    theta : float
+        The phase to be estimated.
 
     Returns
     -------
-        float
-            The estimated phase.
+    float
+        The estimated phase.
     """
     sim = StatevectorSimulator()
 
@@ -46,7 +46,7 @@ def phase_estimation(control_qubits, theta):
 
     bitstring = measurement_results["Measurement"]
     m = int(bitstring, 2)
-    phase = 2 * np.pi * m / (2 ** control_qubits)
+    phase = float(2 * np.pi * m / (2 ** control_qubits))
 
     return phase
 

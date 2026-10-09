@@ -1,13 +1,13 @@
-""""
+"""
 Quantum Teleportation
 """
 
+import numpy as np
 from qsim.gates import pauli_x, pauli_z
 from qsim.operators import Operator
 from qsim.states import StateVector
 from qsim.circuits import Circuit
 from qsim.simulator import StatevectorSimulator
-import numpy as np
 
 
 
@@ -17,8 +17,8 @@ def random_single_qubit_state():
 
     Returns
     -------
-        StateVector
-            A random single-qubit state vector.
+    StateVector
+        A random single-qubit state vector.
     """
     state = np.random.rand(2) + 1j * np.random.rand(2)
     state /= np.linalg.norm(state)
@@ -33,13 +33,13 @@ def teleportation(state_vector):
 
     Parameters
     ----------
-        state_vector : StateVector
-            The state vector to be teleported.
+    state_vector : StateVector
+        The state vector to be teleported.
 
     Returns
     -------
-        StateVector
-            The final state of the system after teleportation.
+    tuple[StateVector, dict]
+        The final state vector and measurement results.
     """
     circuit = Circuit(num_qubits=3)
     initial_state_arr = np.kron(state_vector.amplitudes, np.array([1, 0, 0, 0]))

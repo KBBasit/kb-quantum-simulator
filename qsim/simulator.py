@@ -3,12 +3,12 @@ A module for simulating quantum circuits using state
 vectors.
 """
 
+import numpy as np
 from .gates import hadamard, swap, controlled_phase
 from .states import StateVector
 from .operators import Operator
 from .circuits import Circuit
 from .measurements import measure
-import numpy as np
 
 
 

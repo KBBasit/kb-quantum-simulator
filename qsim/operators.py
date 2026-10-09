@@ -3,8 +3,8 @@ This module contains the implementation of operators used
 in the simulation of quantum circuits.
 """
 
-from .states import StateVector
 import numpy as np
+from .states import StateVector
 
 
 
@@ -29,7 +29,7 @@ class Operator:
 
         Parameters
         ----------
-        matrix : (array-like)
+        matrix : array-like
             The matrix representation of the operator.
         """
         matrix = np.asarray(matrix, dtype=np.complex128)

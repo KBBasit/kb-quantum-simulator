@@ -1,7 +1,7 @@
-from qsim.states import StateVector
-from qsim.measurements import measurement_probabilities, measure, sample
 import numpy as np
 import pytest
+from qsim.states import StateVector
+from qsim.measurements import measurement_probabilities, measure, sample
 
 
 

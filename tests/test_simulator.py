@@ -1,10 +1,10 @@
 import numpy as np
 import pytest
-from qsim.gates import pauli_x
-from qsim.states import StateVector
-from qsim.operators import Operator
-from qsim.circuits import Circuit
-from qsim.simulator import StatevectorSimulator
+from kb_quantum_simulator.gates import pauli_x
+from kb_quantum_simulator.states import StateVector
+from kb_quantum_simulator.operators import Operator
+from kb_quantum_simulator.circuits import Circuit
+from kb_quantum_simulator.simulator import StatevectorSimulator
 
 
 

@@ -3,9 +3,9 @@ Grover's Search Algorithm
 """
 
 import numpy as np
-from qsim.operators import Operator
-from qsim.circuits import Circuit
-from qsim.simulator import StatevectorSimulator
+from kb_quantum_simulator.operators import Operator
+from kb_quantum_simulator.circuits import Circuit
+from kb_quantum_simulator.simulator import StatevectorSimulator
 
 
 

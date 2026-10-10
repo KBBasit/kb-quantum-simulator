@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from qsim.states import StateVector
+from kb_quantum_simulator.states import StateVector
 
 
 

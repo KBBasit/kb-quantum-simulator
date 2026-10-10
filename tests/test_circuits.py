@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
-from qsim import gates
-from qsim.operators import Operator
-from qsim.circuits import Circuit
+from kb_quantum_simulator import gates
+from kb_quantum_simulator.operators import Operator
+from kb_quantum_simulator.circuits import Circuit
 
 
 

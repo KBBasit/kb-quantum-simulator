@@ -3,8 +3,8 @@ Quantum Phase Estimation
 """
 
 import numpy as np
-from qsim.circuits import Circuit
-from qsim.simulator import StatevectorSimulator
+from kb_quantum_simulator.circuits import Circuit
+from kb_quantum_simulator.simulator import StatevectorSimulator
 
 
 

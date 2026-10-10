@@ -3,11 +3,11 @@ Quantum Teleportation
 """
 
 import numpy as np
-from qsim.gates import pauli_x, pauli_z
-from qsim.operators import Operator
-from qsim.states import StateVector
-from qsim.circuits import Circuit
-from qsim.simulator import StatevectorSimulator
+from kb_quantum_simulator.gates import pauli_x, pauli_z
+from kb_quantum_simulator.operators import Operator
+from kb_quantum_simulator.states import StateVector
+from kb_quantum_simulator.circuits import Circuit
+from kb_quantum_simulator.simulator import StatevectorSimulator
 
 
 

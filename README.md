@@ -1,1 +1,1 @@
-# QSim
+# kb_quantum_simulator

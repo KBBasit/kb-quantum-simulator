@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from qsim import gates
+from kb_quantum_simulator import gates
 
 
 

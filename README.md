@@ -3,6 +3,18 @@
 KB quantum simulator is a Python-based quantum circuit simulator built using NumPy.
 
 
+## Installation
+Clone the repository and navigate to the project directory:
+```bash
+git clone https://github.com/KBBasit/kb-quantum-simulator.git
+cd kb-quantum-simulator
+```
+Install the package and its dependencies:
+```bash
+python -m pip install .
+```
+
+
 ## Usage
 The following example demonstrates how to use the simulator to prepare the Bell state $|\Phi^+\rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}$ from the initial state $`|00\rangle`$, measure the first qubit and print the measuremement result and final state.
 ```python
@@ -22,16 +34,7 @@ print(f"Final state: {final_state.amplitudes}")
 ```
 
 
-## Installation
-Clone the repository and navigate to the project directory:
-```bash
-git clone https://github.com/KBBasit/kb-quantum-simulator.git
-cd kb-quantum-simulator
-```
-Install the package and its dependencies:
-```bash
-python -m pip install .
-```
+
 
 
 

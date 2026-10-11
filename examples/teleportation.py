@@ -4,8 +4,8 @@ Quantum Teleportation
 
 import numpy as np
 from kb_quantum_simulator.gates import pauli_x, pauli_z
-from kb_quantum_simulator.operators import Operator
 from kb_quantum_simulator.states import StateVector
+from kb_quantum_simulator.operators import Operator
 from kb_quantum_simulator.circuits import Circuit
 from kb_quantum_simulator.simulator import StatevectorSimulator
 
@@ -41,18 +41,22 @@ def teleportation(state_vector):
     tuple[StateVector, dict]
         The final state vector and measurement results.
     """
+    # Initialisation
     circuit = Circuit(num_qubits=3)
     initial_state_arr = np.kron(state_vector.amplitudes, np.array([1, 0, 0, 0]))
     initial_state = StateVector(initial_state_arr)
 
+    # Form the entangled pair (Bell state) between qubits 1 and 2
     circuit.hadamard(1)
     circuit.cnot(1, 2)
 
+    # Prepare for Bell basis measurement on qubits 0 and 1
     circuit.cnot(0, 1)
     circuit.hadamard(0)
 
     circuit.add_measurement(key="alice", qubits=(0, 1))
 
+    # Apply operations to qubit 2 based on Alice's measurement
     circuit.c_apply(operator=Operator(pauli_z()), measurement_key="alice", measurement_condition="10", target_qubits=(2,))
 
     circuit.c_apply(operator=Operator(pauli_x()), measurement_key="alice", measurement_condition="01", target_qubits=(2,))

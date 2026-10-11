@@ -20,3 +20,18 @@ final_state, measurement_result = sim.run(circuit)
 print(f"Measurement result: {measurement_result['alice']}")
 print(f"Final state: {final_state.amplitudes}")
 ```
+
+
+## Installation
+Clone the repository and navigate to the project directory:
+```bash
+git clone https://github.com/KBBasit/kb-quantum-simulator.git
+cd kb-quantum-simulator
+```
+Install the package and its dependencies:
+```bash
+python -m pip install .
+```
+
+
+

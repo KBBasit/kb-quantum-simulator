@@ -97,7 +97,7 @@ def deutsch_jozsa_algorithm(n, function):
     circuit.pauli_x(ancilla)
     circuit.hadamard(ancilla)
 
-    # Create superposition over the input qubits
+    # Create uniform superposition over the input qubits
     for qubit in range(n):
         circuit.hadamard(qubit)
 

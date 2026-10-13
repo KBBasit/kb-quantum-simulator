@@ -5,6 +5,15 @@
 KB quantum simulator is a Python-based quantum circuit simulator built from scratch using NumPy. It supports the construction and simulation of multi-qubit quantum circuits. The project also includes implementations of five quantum algorithms and protocols using the simulator: Shor's factoring algorithm, Grover's search, quantum phase estimation, Deutsch-Jozsa and quantum teleportation.
 
 
+## Features
+* Statevector simulation of multi-qubit quantum circuits.
+* Support for single-qubit gates, controlled gates and parameterised rotation gates.
+* Quantum Fourier transform (QFT) and inverse QFT.
+* Projective measurements with state collapse.
+* Classically controlled operations based on measurement outcomes.
+* Support for custom states and operators
+
+
 ## Installation
 Clone the repository and navigate to the project directory:
 ```bash

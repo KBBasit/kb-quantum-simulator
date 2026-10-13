@@ -1,6 +1,6 @@
 # kb_quantum_simulator
 ## Overview
-KB quantum simulator is a Python-based quantum circuit simulator built using NumPy. It supports the construction and simulation of multi-qubit quantum circuits. The project also includes implementations of five quantum algorithms and protocols: Shor's factoring algorithm, Grover's search, quantum phase estimation, Deutsch-Jozsa and quantum teleportation.
+KB quantum simulator is a Python-based quantum circuit simulator built from scratch using NumPy. It supports the construction and simulation of multi-qubit quantum circuits. The project also includes implementations of five quantum algorithms and protocols: Shor's factoring algorithm, Grover's search, quantum phase estimation, Deutsch-Jozsa and quantum teleportation.
 
 
 ## Installation

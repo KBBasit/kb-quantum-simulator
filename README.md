@@ -1,8 +1,8 @@
-# kb_quantum_simulator
+# KB Quantum Simulator
 
 
 ## Overview
-KB quantum simulator is a Python-based quantum circuit simulator built from scratch using NumPy. It supports the construction and simulation of multi-qubit quantum circuits. The project also includes implementations of five quantum algorithms and protocols using the simulator: Shor's factoring algorithm, Grover's search, quantum phase estimation, Deutsch-Jozsa and quantum teleportation.
+KB Quantum Simulator is a Python-based quantum circuit simulator built from scratch using NumPy. It supports the construction and simulation of multi-qubit quantum circuits. The project also includes implementations of five quantum algorithms and protocols using the simulator: Shor's factoring algorithm, Grover's search, quantum phase estimation, Deutsch–Jozsa and quantum teleportation.
 
 
 ## Features
@@ -11,7 +11,7 @@ KB quantum simulator is a Python-based quantum circuit simulator built from scra
 * Quantum Fourier transform (QFT) and inverse QFT.
 * Projective measurements with state collapse.
 * Classically controlled operations based on measurement outcomes.
-* Support for custom states and operators
+* Support for custom states and operators.
 
 
 ## Installation
@@ -27,7 +27,7 @@ python -m pip install .
 
 
 ## Usage
-The following example demonstrates how to use the simulator to prepare the Bell state $|\Phi^+\rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}$ from the initial state $`|00\rangle`$, measure the first qubit and print the measuremement result and final state.
+The following example demonstrates how to use the simulator to prepare the Bell state $`|\Phi^+\rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}`$ from the initial state $`|00\rangle`$, measure the first qubit and print the measurement result and final state.
 ```python
 from kb_quantum_simulator.circuits import Circuit
 from kb_quantum_simulator.simulator import StatevectorSimulator

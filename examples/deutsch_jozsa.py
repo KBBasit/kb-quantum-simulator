@@ -88,21 +88,27 @@ def deutsch_jozsa_algorithm(n, function):
     """
     sim = StatevectorSimulator()
 
+    # Initialisation
     circuit = Circuit(num_qubits=n + 1)
     oracle = make_oracle(n, function)
     ancilla = n
 
+    # Prepare ancilla qubit in the state |->
     circuit.pauli_x(ancilla)
     circuit.hadamard(ancilla)
 
+    # Create superposition over the input qubits
     for qubit in range(n):
         circuit.hadamard(qubit)
 
+    # Apply the oracle
     circuit.add_gate(oracle, tuple(range(n + 1)))
 
+    # Apply Hadamard gates to input qubits
     for qubit in range(n):
         circuit.hadamard(qubit)
 
+    # Measure the input qubits
     circuit.add_measurement(key="Measurement", qubits=tuple(range(n)))
 
     _, measurement = sim.run(circuit)

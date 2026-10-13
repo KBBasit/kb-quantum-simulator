@@ -41,6 +41,8 @@ def teleportation(state_vector):
     tuple[StateVector, dict]
         The final state vector and measurement results.
     """
+    sim = StatevectorSimulator()
+
     # Initialisation
     circuit = Circuit(num_qubits=3)
     initial_state_arr = np.kron(state_vector.amplitudes, np.array([1, 0, 0, 0]))
@@ -64,7 +66,6 @@ def teleportation(state_vector):
     circuit.c_apply(operator=Operator(pauli_x()), measurement_key="alice", measurement_condition="11", target_qubits=(2,))
     circuit.c_apply(operator=Operator(pauli_z()), measurement_key="alice", measurement_condition="11", target_qubits=(2,))
 
-    sim = StatevectorSimulator()
     final_state, measurement_result = sim.run(circuit, initial_state=initial_state)
 
     return final_state, measurement_result

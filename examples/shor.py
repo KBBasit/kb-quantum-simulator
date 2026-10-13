@@ -159,6 +159,7 @@ def shors_factoring_algorithm(N, max_attempts=10):
         _, measurement_results = sim.run(circuit)
 
 
+        # Classical processing
         c = int(measurement_results["c"], 2)
         fractions = continued_fractions_algorithm(c, 2 ** n)
         convergents = find_convergents(fractions)

@@ -26,20 +26,25 @@ def phase_estimation(control_qubits, theta):
     """
     sim = StatevectorSimulator()
 
+    # Initialisation
     circuit = Circuit(num_qubits=control_qubits + 1)
-
     target_qubit = circuit.num_qubits - 1
 
+    # Prepare target qubit in the state |1>
     circuit.pauli_x(target_qubit=target_qubit)
 
+    # Create uniform superposition over the control qubits
     for control_qubit in range(control_qubits):
         circuit.hadamard(target_qubit=control_qubit)
 
+    # Apply controlled phase gates
     for control_qubit in range(control_qubits):
         circuit.controlled_phase(control_qubit=control_qubit, target_qubit=target_qubit, theta=theta * (2 ** (control_qubits - control_qubit - 1)))
-    
+
+    # Apply the inverse Quantum Fourier Transform
     circuit.inverse_quantum_fourier_transform(target_qubits=tuple(range(control_qubits)))
 
+    # Measure the control qubits
     circuit.add_measurement(key = "Measurement", qubits = tuple(range(control_qubits)))
 
     _, measurement_results = sim.run(circuit)
